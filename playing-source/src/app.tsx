@@ -7,7 +7,7 @@ import { } from "./format_unicorn"
 
 
 async function main() {
-	while (!Spicetify?.showNotification) {
+	while (!Spicetify?.Player || !Spicetify?.URI || !Spicetify?.Locale || !Spicetify?.CosmosAsync) {
 		await new Promise(resolve => setTimeout(resolve, 100))
 	}
 	

@@ -2,9 +2,10 @@
     {
         "name": "Playing Source",
         "description": "View and go to the context of what's currently playing.",
-        "preview": "icon.png",
+        "preview": "playing-source/assets/icon.png",
         "main": "dist/playing-source.js",
-        "readme": "README.md",
+        "readme": "playing-source/README.md",
+        "branch": "dist",
         "tags": [
             "playbar",
             "playing",
