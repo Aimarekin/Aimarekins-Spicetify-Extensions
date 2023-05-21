@@ -206,6 +206,7 @@ async function main() {
 		SourceType.AD,
 		SourceType.USER_TOP_TRACKS,
 		SourceType.LIKED_SONGS,
+		SourceType.QUEUE,
 		SourceType.UNKNOWN,
 	])
 
