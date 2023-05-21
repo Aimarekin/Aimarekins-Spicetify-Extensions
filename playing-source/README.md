@@ -6,6 +6,10 @@ On mobile devices, there is an indicator on top of the currently playing screen 
 
 This extension seeks to implement this feature on desktop: hover your mouse over the cover art of the currently playing track to see a popup with information of the playing context.
 
+![Showcase](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/playing-source/assets/example.gif?raw=true)
+
+![Screenshot Gallery](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/playing-source/assets/gallery.png?raw=true)
+
 ## Installation
 With Spicetify Marketplace, or manually with the file dist/playing-source.js
 
