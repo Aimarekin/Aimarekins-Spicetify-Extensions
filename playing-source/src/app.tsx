@@ -4,102 +4,13 @@ import { waitForElm, getUriName } from "./util"
 import { Translate } from "./localizer"
 import { SourceType, getContext } from "./context_handling"
 import "./format_unicorn"
+import "./style.css"
 
 
 async function main() {
 	while (!Spicetify?.Player || !Spicetify?.URI || !Spicetify?.Locale || !Spicetify?.CosmosAsync) {
 		await new Promise(resolve => setTimeout(resolve, 100))
 	}
-	
-	// Inject CSS
-	const style = document.createElement("style")
-	style.innerHTML = `
-	.playing-source-ao-container {
-		transition: filter 0.1s ease-in-out;
-		pointer-events: none;
-		position: absolute;
-		display: block;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		--playing-source-ao-bkg-color: rgba(0, 0, 0, 0.5);
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: flex-end;
-		filter: opacity(0);
-	}
-
-	.main-downloadClient-container:hover .playing-source-ao-container {
-		filter: opacity(1);
-	}
-
-	.playing-source-ao-before {
-		width: 100%;
-		height: 50px;
-		background: linear-gradient(transparent, var(--playing-source-ao-bkg-color));
-	}
-
-	.playing-source-ao {
-		width: 100%;
-		height: min-content;
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: flex-end;
-		align-items: center;
-		background: var(--playing-source-ao-bkg-color);
-		padding: 10px;
-		padding-top: 0;
-		gap: 5px;
-		text-shadow: 0 0 4px black;
-	}
-
-	.playing-source-ao-header {
-		font-weight: 100;
-		font-size: 0.8em;
-		text-transform: uppercase;
-	}
-
-	.playing-source-ao-source {
-		pointer-events: auto;
-		font-weight: bold;
-		text-overflow: ellipsis;
-		overflow-x: hidden;
-		white-space: nowrap;
-		max-width: 100%;
-	}
-
-	.playing-source-ao-source:hover {
-		text-decoration: none;
-	}
-
-	.playing-source-ao-source[href]:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
-	.playing-source-tt {
-		text-align: center
-	}
-
-	.playing-source-tt-header {
-		font-style: italic;
-	}
-
-	.playing-source-tt-source {
-		font-weight: bold;
-		overflow-x: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		max-width: 200px;
-	}
-
-	.playing-source-hidden {
-		display: none !important;
-	}
-	`
-	document.head.appendChild(style)
 	
 	// Create album overlay
 	const albumOverlay = (
