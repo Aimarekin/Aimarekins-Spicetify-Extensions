@@ -1,3 +1,7 @@
+.playing-source-ao-relative-positioner {
+    position: relative;
+}
+
 .playing-source-ao-container {
     transition: filter 0.1s ease-in-out;
     pointer-events: none;
@@ -16,8 +20,12 @@
     color: var(--spice-text);
 }
 
-.main-downloadClient-container:hover .playing-source-ao-container {
-    filter: opacity(1);
+.main-coverSlotExpanded-container, .main-nowPlayingView-coverArt {
+    &:hover, &:focus-within {
+        & .playing-source-ao-container {
+            filter: opacity(1);
+        }
+    }
 }
 
 .playing-source-ao-container::before {
@@ -48,7 +56,6 @@
 }
 
 .playing-source-ao-source {
-    pointer-events: auto;
     font-weight: bold;
     text-overflow: ellipsis;
     overflow-x: hidden;
@@ -56,13 +63,15 @@
     max-width: 100%;
 }
 
-.playing-source-ao-source:hover {
+.playing-source-ao-header, .playing-source-ao-source{
     text-decoration: none;
-}
-
-.playing-source-ao-source[href]:hover {
-    text-decoration: underline;
-    cursor: pointer;
+    &[href] {
+        pointer-events: auto;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
 }
 
 .playing-source-tt {

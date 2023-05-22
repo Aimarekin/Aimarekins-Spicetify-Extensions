@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createElement, createFragment } from "./jsx"
-import { waitForElm, getUriName } from "./util"
+import { waitForElm, generateBindsFor, getUriName, setOnAll } from "./util"
 import { Translate } from "./localizer"
 import { SourceType, SourceInfo, getContext } from "./context_handling"
 import "./format_unicorn"
-import "./style.css"
+import "./style.scss"
 
+type Promisable<T> = T | Promise<T>
 
 async function main() {
 	while (!Spicetify?.Player || !Spicetify?.URI || !Spicetify?.Locale || !Spicetify?.CosmosAsync) {
@@ -13,52 +14,46 @@ async function main() {
 	}
 	
 	// Create album overlay
-	const albumOverlay = (
+	const createAlbumOverlay = () => (
 		<div className="playing-source-ao-container">
 			<div className="playing-source-ao">
-				<span className="playing-source-ao-header">
+				<a className="playing-source-ao-header">
 					PLAYING FROM
-				</span>
+				</a>
 				<a className="playing-source-ao-source">
 					...
 				</a>
 			</div>
 		</div>
 	) as unknown as HTMLDivElement
-
-	const albumOverlayHeader = albumOverlay.querySelector(".playing-source-ao-header") as HTMLSpanElement
-	const albumOverlaySource = albumOverlay.querySelector(".playing-source-ao-source") as HTMLAnchorElement
 	
 	// For expanded:
-	// Wait for root class
 	// OLD GUI:
+	// Root class is "main-downloadClient-container"
 	// Watch for creation of element with class "main-coverSlotExpanded-container"
 	// NEW SIDEBAR:
-	// Then watch for creation of element with class "LROBF2WtGaVryVpVbSOu"
+	// Root class is "UalNRoO1omHtEEniypS5"
+	// Then watch for creation of element with class "cover-art"
 
 	// For collapsed:
-	// Wait until root element "main-nowPlayingBar-left" is available
-	// That one won't go away
+	// Root class is "main-nowPlayingBar-left"
 	// Then watch for creation of element with class "main-coverSlotCollapsed-container"
 
-	/* BINDING TO EXPANDED COVER */
+	// For right sidebar:
+	// This feature is still in development, and may change/get more specific in the future
+	// Root class is "Root__top-container"
+	// Display on top of "main-nowPlayingView-coverArt"
 	
-	waitForElm(".main-downloadClient-container").then((expandedParent) => {
-		let currentParent : Element | null = null
-		function appendExpandedOverlay() {
-			const el = expandedParent.querySelector(".main-coverSlotExpanded-container")
-			if (el && el !== currentParent) {
-				currentParent = el
-				el.appendChild(albumOverlay)
-			}
-		}
-		appendExpandedOverlay()
+	/* BINDING TO EXPANDED COVERS */
 
-		new MutationObserver(appendExpandedOverlay).observe(expandedParent, {
-			childList: true,
-			subtree: true
-		})
-	})
+	const albumOverlays = generateBindsFor(
+		createAlbumOverlay,
+		[
+			[ ".main-downloadClient-container", ".main-coverSlotExpanded-container" ],
+			[ ".UalNRoO1omHtEEniypS5", ".cover-art" ],
+			//[ ".Root__top-container", ".main-nowPlayingView-coverArt" ], //Doesn't work just yet
+		]
+	)
 
 	/* BINDING TO COLLAPSED COVER */
 
@@ -74,9 +69,9 @@ async function main() {
 	let tippyInstance: unknown = null
 	const tippyContents = (
 		<div className="playing-source-tt">
-			<span className="playing-source-tt-header">
+			<a className="playing-source-tt-header">
 				Playing from
-			</span>
+			</a>
 			<div className="playing-source-tt-source-container">
 				<a className="playing-source-tt-source">
 					...
@@ -110,9 +105,8 @@ async function main() {
 	/*
 		UPDATE SOURCE
 	*/
-	let sourceUpdateIndex = 0
 
-	const SourcesWithoutName = new Set([
+	const sourcesWithoutName = new Set([
 		SourceType.TRACK,
 		SourceType.RECENT_SEARCHED,
 		SourceType.AD,
@@ -123,46 +117,46 @@ async function main() {
 		SourceType.UNKNOWN,
 	])
 
-	function setSourceText(headerText: string, sourceText: string | null, updateIndex = -1) {
-		if (updateIndex !== -1 && updateIndex < sourceUpdateIndex) return
-		if (sourceText === null) sourceText = Translate("unknown")
+	const presetSourceLinks = {
+		[SourceType.AD]: null,
+		[SourceType.QUEUE]: null,
+	}
+	const getContextLink = (context: SourceInfo = getContext()) => (
+		context.type in presetSourceLinks ? presetSourceLinks[context.type] : Spicetify.Player.data.context_uri
+	)
 
-		albumOverlayHeader.innerText = headerText
+	function setShownText(headerText: string, sourceText: string | null) {
 		tippyHeader.innerText = headerText
+		tippySource.innerText = sourceText || ""
 
-		albumOverlaySource.innerText = sourceText
-		tippySource.innerText = sourceText
+		albumOverlays.forEach((el:HTMLElement) => {
+			const overlayHeader = el.querySelector(".playing-source-ao-header") as HTMLAnchorElement
+			const overlaySource = el.querySelector(".playing-source-ao-source") as HTMLAnchorElement
+
+			overlayHeader.innerText = headerText
+			overlaySource.innerText = sourceText || ""
+
+			overlaySource.classList[headerText === null ? "add" : "remove"]("playing-source-hidden")
+			overlaySource.removeAttribute("href")
+			overlayHeader.removeAttribute("href")
+			const link = getContextLink()
+			if (link) {
+				(sourceText === null ? overlayHeader : overlaySource).setAttribute("href", link)
+			}
+		})
 	}
 
+	let sourceUpdateIndex = 0
 	let lastSource: SourceInfo | null = null
 	function updateSource() {
 		const source = getContext()
 		// Don't update if it's the same source
 		if (lastSource !== null && lastSource.type === source.type && lastSource?.uri === source?.uri) return
 		lastSource = source
-		sourceUpdateIndex++
-
-		if (source?.uri) {
-			albumOverlaySource.href = source.uri
-			tippySource.href = source.uri
-		}
-		else {
-			albumOverlaySource.removeAttribute("href")
-			tippySource.removeAttribute("href")
-		}
 
 		let headerText: string
-		let sourceText: Promise<string | null> | null = null
-
-		if (SourcesWithoutName.has(source.type)) {
-			albumOverlaySource.classList.add("playing-source-hidden")
-			tippySourceContainer.classList.add("playing-source-hidden")
-		}
-		else {
-			albumOverlaySource.classList.remove("playing-source-hidden")
-			tippySourceContainer.classList.remove("playing-source-hidden")
-			sourceText = getUriName(source.uri)
-		}
+		let sourceText: Promisable<string | null> = null
+		sourceUpdateIndex++
 
 		switch (source.type) {
 			case SourceType.TRACK:
@@ -179,17 +173,28 @@ async function main() {
 				break
 			default:
 				headerText = Translate("playing_" + source.type)
+				sourceText = getUriName(source.uri)
 				break
 		}
 
-		if (sourceText !== null) {
-			setSourceText(headerText, Translate("loading"))
-			sourceText.then(name => setSourceText(headerText, name, sourceUpdateIndex))
+		if (sourcesWithoutName.has(source.type)) {
+			sourceText = null
 		}
-		else {
-			setSourceText(headerText, sourceText)
+		else if (sourceText === null) {
+			sourceText = Translate("unknown")
 		}
-		
+
+		setShownText(headerText, sourceText instanceof Promise ? Translate("loading") : sourceText)
+
+		if (sourceText instanceof Promise) {
+			const index = sourceUpdateIndex
+			sourceText.then((resolved) => {
+				// Don't update if the source has changed
+				if (index !== sourceUpdateIndex) return
+
+				setShownText(headerText, resolved)
+			})
+		}
 	}
 
 	Spicetify.Player.addEventListener("onprogress", updateSource)

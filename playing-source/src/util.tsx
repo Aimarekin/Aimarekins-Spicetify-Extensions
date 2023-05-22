@@ -34,6 +34,41 @@ export function waitForElm(selector:string, within:HTMLElement = document.body, 
 	})
 }
 
+export function bindElementTo(el: HTMLElement, rootSelector: string, containerSelector: string) {
+	waitForElm(rootSelector, document.body).then((foundRoot) => {
+		let currentParent : Element | null = null
+		function appendElement() {
+			const foundParent = foundRoot.querySelector(containerSelector)
+			if (foundParent && foundParent !== currentParent) {
+				currentParent = foundParent
+				foundParent.appendChild(el)
+			}
+		}
+		appendElement()
+
+		new MutationObserver(appendElement).observe(foundRoot, {
+			childList: true,
+			subtree: true
+		})
+	})
+}
+
+export function generateBindsFor(generator: () => HTMLElement, options: string[][]) {
+	const generated: HTMLElement[] = []
+	options.forEach((option) => {
+		const el = generator()
+		generated.push(el)
+		bindElementTo(el, option[0], option[1])
+	})
+	return generated
+}
+
+export function setOnAll(selector: string, property: string, value: any) {
+	document.body.querySelectorAll(selector).forEach((el: any) => {
+		el[property] = value
+	})
+}
+
 const _getUriName_cache: Record<string, string | null | Promise<string | null> > = {}
 export function storeUriNameChache(URI: string, name: string | null | undefined) {
 	_getUriName_cache[URI] = name === undefined ? null : (name || null)
