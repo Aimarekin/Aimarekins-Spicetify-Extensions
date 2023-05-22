@@ -10,5 +10,17 @@
             "source",
             "context"
         ]
+    },
+    {
+        "name": "Copy Lyrics",
+        "description": "Copy the lyrics of a song.",
+        "preview": "copy-lyrics/assets/demo.gif",
+        "main": "dist/copy-lyrics.js",
+        "readme": "copy-lyrics/README.md",
+        "tags": [
+            "lyrics",
+            "copy",
+            "clipboard"
+        ]
     }
 ]

@@ -1,0 +1,26 @@
+.os-content:has(.lyrics-lyrics-container) {
+	user-select: text !important;
+}
+
+.lyrics-lyrics-contentContainer {
+	user-select: text !important;
+}
+
+.lyrics-lyricsContent-description {
+	user-select: none !important;
+}
+
+.lyrics-lyricsContent-provider {
+	user-select: none !important;
+}
+
+/* Animate the background from yellow to transparent
+CSS doesn't support animating the selection pseudo-element,
+so it has to be done with code */
+.copy-lyrics-deselection-animation .lyrics-lyricsContent-lyric::selection {
+	background: var(--copy-lyrics-selection-color) !important;
+}
+
+.copy-lyrics-selecting .lyrics-lyricsContent-lyric {
+	cursor: text !important;
+}
