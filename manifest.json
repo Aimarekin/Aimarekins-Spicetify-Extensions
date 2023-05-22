@@ -2,7 +2,7 @@
     {
         "name": "Playing Source",
         "description": "View and go to the context of what's currently playing.",
-        "preview": "playing-source/assets/icon.png",
+        "preview": "playing-source/assets/icon.gif",
         "main": "dist/playing-source.js",
         "readme": "playing-source/README.md",
         "tags": [
