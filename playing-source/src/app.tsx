@@ -3,7 +3,7 @@ import { createElement, createFragment } from "./jsx"
 import { waitForElm, getUriName } from "./util"
 import { Translate } from "./localizer"
 import { SourceType, getContext } from "./context_handling"
-import { } from "./format_unicorn"
+import "./format_unicorn"
 
 
 async function main() {
