@@ -14,7 +14,7 @@ This extension seeks to implement this feature on desktop: hover your mouse over
 With Spicetify Marketplace, or manually with the file dist/playing-source.js
 
 ## Theming
-If you're a theme developer, you can modify the CSS rules of this extension.See app.tsx for the CSS applied on the created elements.
+If you're a theme developer, you can modify the CSS rules of this extension. See app.tsx for the CSS applied on the created elements.
 
 ## Translating
 This extension is localized. See the files under src/loc to translate this extension into your language.
