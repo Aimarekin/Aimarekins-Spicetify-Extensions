@@ -40,7 +40,6 @@ export function storeUriNameChache(URI: string, name: string | null | undefined)
 }
 
 export function getUriName(URI:string | undefined): Promise<string | null> {
-	console.log("GET NAME FOR", URI, _getUriName_cache)
 	if (!URI) return new Promise((resolve) => resolve(null))
 
 	const cached = _getUriName_cache[URI]
@@ -86,7 +85,6 @@ async function _getUriName(SourceURI:string): Promise<string | null> {
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/albums/${URI._base62Id}`))?.name || null
 		case Spicetify.URI.Type.ARTIST:
 		case Spicetify.URI.Type.COLLECTION_ARTIST:
-			console.log("GETTING NAME FOR ARTIST", URI)
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/artists/${URI._base62Id}`))?.name || null
 		case Spicetify.URI.Type.EPISODE:
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/episodes/${URI._base62Id}`))?.name || null

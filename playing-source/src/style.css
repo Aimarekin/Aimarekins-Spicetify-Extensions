@@ -13,13 +13,15 @@
     flex-flow: column nowrap;
     justify-content: flex-end;
     filter: opacity(0);
+    color: var(--spice-text);
 }
 
 .main-downloadClient-container:hover .playing-source-ao-container {
     filter: opacity(1);
 }
 
-.playing-source-ao-before {
+.playing-source-ao-container::before {
+    content: "";
     width: 100%;
     height: 50px;
     background: linear-gradient(transparent, var(--playing-source-ao-bkg-color));

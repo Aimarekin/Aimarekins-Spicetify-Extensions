@@ -2,7 +2,7 @@
 import { createElement, createFragment } from "./jsx"
 import { waitForElm, getUriName } from "./util"
 import { Translate } from "./localizer"
-import { SourceType, getContext } from "./context_handling"
+import { SourceType, SourceInfo, getContext } from "./context_handling"
 import "./format_unicorn"
 import "./style.css"
 
@@ -15,7 +15,6 @@ async function main() {
 	// Create album overlay
 	const albumOverlay = (
 		<div className="playing-source-ao-container">
-			<div className="playing-source-ao-before"></div>
 			<div className="playing-source-ao">
 				<span className="playing-source-ao-header">
 					PLAYING FROM
@@ -135,8 +134,12 @@ async function main() {
 		tippySource.innerText = sourceText
 	}
 
+	let lastSource: SourceInfo | null = null
 	function updateSource() {
 		const source = getContext()
+		// Don't update if it's the same source
+		if (lastSource !== null && lastSource.type === source.type && lastSource?.uri === source?.uri) return
+		lastSource = source
 		sourceUpdateIndex++
 
 		if (source?.uri) {
@@ -162,21 +165,21 @@ async function main() {
 		}
 
 		switch (source.type) {
-		case SourceType.TRACK:
-			headerText = Translate("playing_TRACK")
-			break
-		case SourceType.RECOMMENDED:
-			if (source?.uri) {
-				headerText = Translate("playing_RECOMMENDED")
-				sourceText = getUriName(source.uri)
-			}
-			else {
-				headerText = Translate("playing_RECOMMENDED_generic")
-			}
-			break
-		default:
-			headerText = Translate("playing_" + source.type)
-			break
+			case SourceType.TRACK:
+				headerText = Translate("playing_TRACK")
+				break
+			case SourceType.RECOMMENDED:
+				if (source?.uri) {
+					headerText = Translate("playing_RECOMMENDED")
+					sourceText = getUriName(source.uri)
+				}
+				else {
+					headerText = Translate("playing_RECOMMENDED_generic")
+				}
+				break
+			default:
+				headerText = Translate("playing_" + source.type)
+				break
 		}
 
 		if (sourceText !== null) {
@@ -189,9 +192,7 @@ async function main() {
 		
 	}
 
-	updateSource()
-
-	Spicetify.Player.addEventListener("songchange", updateSource)
+	Spicetify.Player.addEventListener("onprogress", updateSource)
 }
 	
 export default main
