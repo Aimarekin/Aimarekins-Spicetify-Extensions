@@ -39,6 +39,14 @@ export function storeUriNameChache(URI: string, name: string | null | undefined)
 	_getUriName_cache[URI] = name === undefined ? null : (name || null)
 }
 
+const typesThatShouldntCache = new Set<string | undefined>([
+	Spicetify.URI.Type.AD,
+	Spicetify.URI.Type.SEARCH,
+	Spicetify.URI.Type.LOCAL_TRACK,
+	Spicetify.URI.Type.LOCAL_ALBUM,
+	Spicetify.URI.Type.LOCAL_ARTIST
+])
+
 export function getUriName(URI:string | undefined): Promise<string | null> {
 	if (!URI) return new Promise((resolve) => resolve(null))
 
@@ -52,22 +60,11 @@ export function getUriName(URI:string | undefined): Promise<string | null> {
 
 	return new Promise((resolve) => {
 		const namePromise = _getUriName(URI)
-		if (shouldCacheUriName(URI)) {
+		if (!typesThatShouldntCache.has(Spicetify.URI.from(URI)?.type)) {
 			_getUriName_cache[URI] = namePromise
 		}
 		namePromise.then((name) => resolve(name) ).catch(() => resolve(null))
 	})
-};
-
-function shouldCacheUriName(SourceURI:string): boolean {
-	const URI = Spicetify.URI.from(SourceURI)
-	return (
-		!Spicetify.URI.isAd(URI) &&
-        !Spicetify.URI.isSearch(URI) &&
-        !Spicetify.URI.isLocalAlbum(URI) &&
-        !Spicetify.URI.isLocalArtist(URI) &&
-        !Spicetify.URI.isLocalTrack(URI)
-	)
 }
 
 async function _getUriName(SourceURI:string): Promise<string | null> {
