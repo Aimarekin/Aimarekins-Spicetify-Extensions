@@ -4,6 +4,8 @@ Copy the lyrics of your song directly from the "Show Lyrics" view. Click and dra
 
 Press `CTRL+A` to copy the whole song at once.
 
+The [Lyrics Plus Custom App](https://spicetify.app/docs/advanced-usage/custom-apps/#lyrics-plus) has other and similar features you might be interested in.
+
 ![Demo](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/assets/demo.gif?raw=true)
 
 ## Installation

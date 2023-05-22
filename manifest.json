@@ -13,7 +13,7 @@
     },
     {
         "name": "Copy Lyrics",
-        "description": "Copy the lyrics of a song.",
+        "description": "Copy the lyrics of a song from Spotify's lyrics tab.",
         "preview": "copy-lyrics/assets/demo.gif",
         "main": "dist/copy-lyrics.js",
         "readme": "copy-lyrics/README.md",
