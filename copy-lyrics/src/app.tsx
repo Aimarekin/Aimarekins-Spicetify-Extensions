@@ -55,9 +55,6 @@ async function main() {
 		}
 		if (isSelecting) return
 
-		// A selection has begun
-		console.log("Selection begun")
-
 		isSelecting = true
 		hasBegunSelectionSinceLastCopy = true
 		
@@ -80,21 +77,16 @@ async function main() {
 
 	// Attempt to copy the selected lyrics
 	function tryCopyLyrics() {
-		console.log("Attempting a copy...", hasBegunSelectionSinceLastCopy)
-
 		// Don't allow copying if a selection hasn't started since the last copy
 		if (!hasBegunSelectionSinceLastCopy) return
-		console.log("PASSED 1")
 
 		// Check if lyrics are currenty being displayed
 		const lyricsContainer = document.querySelector(".lyrics-lyrics-container") as HTMLElement
 		if (!lyricsContainer) return
-		console.log("PASSED 2")
 
 		// Get the selection and check if it's a selection of the lyrics
 		const selectionText = getSelectedLyrics()
 		if (!selectionText) return
-		console.log("PASSED 3")
 
 		// Copy the selection
 		Spicetify.Platform.ClipboardAPI.copy(selectionText)
@@ -121,10 +113,9 @@ async function main() {
 		const thisSelectionAnimationIndex = selectionAnimationIndex
 		const update = () => {
 			// Check if this animation is still the latest one
-			if (thisSelectionAnimationIndex != selectionAnimationIndex) { console.log("Animation cancelled"); return}
+			if (thisSelectionAnimationIndex != selectionAnimationIndex) return
 
 			const progress = (performance.now() - start) / duration
-			//console.log(progress)
 			let color
 			if (progress >= 1) {
 				// Animation is done
@@ -145,7 +136,6 @@ async function main() {
 	// Add CTRL+A shortcut
 	document.addEventListener("keyup", (event) => {
 		if (!(event.ctrlKey && event.code == "KeyA")) return
-		//console.log("CTRLA!")
 
 		// Check if lyrics are currenty being displayed
 		const lyricsContainer = document.querySelector(".lyrics-lyrics-contentContainer")
