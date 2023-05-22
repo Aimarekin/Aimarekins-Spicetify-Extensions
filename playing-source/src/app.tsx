@@ -31,9 +31,11 @@ async function main() {
 	const albumOverlaySource = albumOverlay.querySelector(".playing-source-ao-source") as HTMLAnchorElement
 	
 	// For expanded:
-	// Wait until root element "main-downloadClient-container" is available
-	// That one won't go away
-	// Then watch for creation of element with class "main-coverSlotExpanded-container"
+	// Wait for root class
+	// OLD GUI:
+	// Watch for creation of element with class "main-coverSlotExpanded-container"
+	// NEW SIDEBAR:
+	// Then watch for creation of element with class "LROBF2WtGaVryVpVbSOu"
 
 	// For collapsed:
 	// Wait until root element "main-nowPlayingBar-left" is available
@@ -118,6 +120,7 @@ async function main() {
 		SourceType.USER_TOP_TRACKS,
 		SourceType.LIKED_SONGS,
 		SourceType.QUEUE,
+		SourceType.LOCAL_FILES,
 		SourceType.UNKNOWN,
 	])
 

@@ -9,6 +9,7 @@
     "playing_STATION": "Reproduciendo Radio de",
     "playing_EPISODE": "Reproduciendo Episodio",
     "playing_PODCAST": "Reproduciendo desde Podcast",
+    "playing_ARTIST_LIKED_SONGS": "Reproduciendo canciones que te gustan de",
 
     "playing_TRACK": "Reproduciendo Canción",
     "playing_RECOMMENDED_generic": "Reproduciendo recomendados",
@@ -16,6 +17,7 @@
     "playing_USER_TOP_TRACKS": "Reproduciendo canciones más escuchadas",
     "playing_LIKED_SONGS": "Reproduciendo canciones que te gustan",
     "playing_QUEUE": "Reproduciendo desde la cola de reproducción",
+    "playing_LOCAL_FILES": "Reproduciendo archivos locales",
     "playing_AD": "Anuncio",
 
     "playing_UNKNOWN": "En reproducción",

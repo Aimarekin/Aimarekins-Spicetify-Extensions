@@ -9,6 +9,7 @@
     "playing_STATION": "Playing from Radio based on",
     "playing_EPISODE": "Playing Episode",
     "playing_PODCAST": "Playing from Podcast",
+    "playing_ARTIST_LIKED_SONGS": "Playing Liked Songs from",
 
     "playing_TRACK": "Playing Track",
     "playing_RECOMMENDED_generic": "Playing recommended",
@@ -16,6 +17,7 @@
     "playing_USER_TOP_TRACKS": "Playing from Top Tracks",
     "playing_LIKED_SONGS": "Playing from Liked Songs",
     "playing_QUEUE": "Playing from Queue",
+    "playing_LOCAL_FILES": "Playing from Local Files",
     "playing_AD": "Advertisement",
 
     "playing_UNKNOWN": "Currently playing",
