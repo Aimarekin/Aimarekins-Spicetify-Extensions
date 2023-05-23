@@ -63,12 +63,6 @@ export function generateBindsFor(generator: () => HTMLElement, options: string[]
 	return generated
 }
 
-export function setOnAll(selector: string, property: string, value: any) {
-	document.body.querySelectorAll(selector).forEach((el: any) => {
-		el[property] = value
-	})
-}
-
 const _getUriName_cache: Record<string, string | null | Promise<string | null> > = {}
 export function storeUriNameChache(URI: string, name: string | null | undefined) {
 	_getUriName_cache[URI] = name === undefined ? null : (name || null)

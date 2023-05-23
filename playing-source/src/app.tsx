@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createElement, createFragment } from "./jsx"
-import { waitForElm, generateBindsFor, getUriName, setOnAll } from "./util"
+import { waitForElm, generateBindsFor, getUriName } from "./util"
 import { Translate } from "./localizer"
 import { SourceType, SourceInfo, getContext } from "./context_handling"
 import "./format_unicorn"
