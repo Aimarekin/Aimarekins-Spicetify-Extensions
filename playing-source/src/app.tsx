@@ -9,7 +9,7 @@ import "./style.scss"
 type Promisable<T> = T | Promise<T>
 
 async function main() {
-	while (!Spicetify?.Player || !Spicetify?.URI || !Spicetify?.Locale || !Spicetify?.CosmosAsync) {
+	while (!Spicetify?.Player?.data || !Spicetify?.URI || !Spicetify?.Locale || !Spicetify?.CosmosAsync) {
 		await new Promise(resolve => setTimeout(resolve, 100))
 	}
 	
@@ -122,7 +122,7 @@ async function main() {
 		[SourceType.QUEUE]: null,
 	}
 	const getContextLink = (context: SourceInfo = getContext()) => (
-		context.type in presetSourceLinks ? presetSourceLinks[context.type] : Spicetify.Player.data.context_uri
+		context.type in presetSourceLinks ? presetSourceLinks[context.type] : Spicetify.Player.data?.context_uri
 	)
 
 	function setShownText(headerText: string, sourceText: string | null) {
