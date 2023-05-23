@@ -2,20 +2,17 @@
 	initial-value: #ffff00;
 }
 
-.os-content:has(.lyrics-lyrics-container .lyrics-lyricsContent-lyric) {
+.os-content:has(.lyrics-lyrics-container .lyrics-lyricsContent-lyric),
+.lyrics-lyrics-contentContainer:has(.lyrics-lyricsContent-lyric),
+.lyrics-lyricsContent-lyric
+{
 	user-select: text !important;
 }
 
-.lyrics-lyrics-contentContainer:has(.lyrics-lyricsContent-lyric) {
-	user-select: text !important;
-}
-
-.lyrics-lyricsContent-description, .lyrics-lyricsContent-provider {
+.lyrics-lyricsContent-description,
+.lyrics-lyricsContent-provider
+{
 	user-select: none !important;
-}
-
-.lyrics-lyricsContent-lyric {
-	user-select: text !important;
 }
 
 /* Animate the background from yellow to transparent
