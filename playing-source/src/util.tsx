@@ -163,4 +163,4 @@ async function _getUriName(SourceURI:string): Promise<string | null> {
 	}
 
 	return null
-};
+}
