@@ -6,7 +6,7 @@
 	user-select: text !important;
 }
 
-.lyrics-lyrics-container:has(.lyrics-lyricsContent-lyric) {
+.lyrics-lyrics-contentContainer:has(.lyrics-lyricsContent-lyric) {
 	user-select: text !important;
 }
 
