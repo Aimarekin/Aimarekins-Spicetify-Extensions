@@ -98,7 +98,7 @@ export function getUriName(URI:string | undefined): Promise<string | null> {
 		if (!typesThatShouldntCache.has(Spicetify.URI.from(URI)?.type)) {
 			_getUriName_cache[URI] = namePromise
 		}
-		namePromise.then((name) => resolve(name) ).catch(() => resolve(null))
+		namePromise.then((name) => resolve(name)).catch(() => resolve(null))
 	})
 }
 
@@ -127,6 +127,21 @@ async function _getUriName(SourceURI:string): Promise<string | null> {
 		case Spicetify.URI.Type.PROFILE: {
 			const res = await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/users/${URI._base62Id}`)
 			return res?.display_name || res?.id || null
+		}
+		case Spicetify.URI.Type.FOLDER: {
+			// Getting this is a little more complicated. We have to traverse the user's playlists and find the one that matches the folder's ID
+			let toReturn = null
+			function traverse(item) {
+				if (item.type == "folder") {
+					storeUriNameChache(item.uri, item.name)
+					if (item.uri == SourceURI) {
+						toReturn = item.name
+					}
+					item.items.forEach(traverse)
+				}
+			}
+			traverse(await Spicetify.Platform.RootlistAPI.getContents())
+			return toReturn
 		}
 
 		case Spicetify.URI.Type.AD:

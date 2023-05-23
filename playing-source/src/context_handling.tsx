@@ -15,6 +15,7 @@ export enum SourceType {
     LIKED_SONGS = "LIKED_SONGS",
 	ARTIST_LIKED_SONGS = "ARTIST_LIKED_SONGS",
 	LOCAL_FILES = "LOCAL_FILES",
+	FOLDER = "FOLDER",
     QUEUE = "QUEUE",
 	AD = "AD",
 
@@ -26,7 +27,8 @@ export interface SourceInfo {
 	uri?: string;
 }
 
-var lastValidSearchUri: string | null = null
+let lastValidSearchUri: string | null = null
+const warnedNotSupported = new Set<string>()
 
 export function getContext(): SourceInfo {
 	const RawURI = Spicetify.Player.data?.context_uri
@@ -120,6 +122,11 @@ export function getContext(): SourceInfo {
 							uri: RawURI
 						}
 					}
+				case Spicetify.URI.Type.FOLDER:
+					return {
+						type: SourceType.FOLDER,
+						uri: RawURI
+					}
 				case Spicetify.URI.Type.APPLICATION:
 					if (CtxURI._base62Id === "local-files") {
 						return { type: SourceType.LOCAL_FILES }
@@ -140,6 +147,10 @@ export function getContext(): SourceInfo {
 			return { type: SourceType.QUEUE }
 	}
 
-	console.warn("PLAYING-SOURCE: Unknown context for:", RawURI, CtxURI, Spicetify.Player.data)
+	const fullIdentifier = `${provider}@${RawURI}`
+	if (!warnedNotSupported.has(fullIdentifier)) {
+		console.warn("PLAYING-SOURCE: Unknown context for provider", provider, "with URI", RawURI, "\n", CtxURI, Spicetify.Player.data)
+		warnedNotSupported.add(fullIdentifier)
+	}
 	return { type: SourceType.UNKNOWN }
 }
