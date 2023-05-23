@@ -12,6 +12,12 @@ async function main() {
 		await new Promise(resolve => setTimeout(resolve, 100))
 	}
 
+	// Inject CSS rule we have to modify through JS
+	const InjectedCSSElement = document.createElement("style")
+	InjectedCSSElement.innerHTML = ".lyrics-lyricsContent-lyric::highlight(copy-lyrics-deselection-highlight){background-color:#000}"
+	document.head.appendChild(InjectedCSSElement)
+	const InjectedHighlightRule = (InjectedCSSElement.sheet as CSSStyleSheet).cssRules[0]
+
 	// Javascript's selectstart event can not be used here
 	// because it literally fires on mouse click
 	// So we have to handle it ourselves
@@ -47,10 +53,12 @@ async function main() {
 		// Check if it's a valid selection
 		if (!getSelectedLyrics()) {
 			isSelecting = false
-			
+			const lyricsContainer = document.querySelector(".lyrics-lyrics-container")
+			if (!lyricsContainer) return
 			// If it's connected, disconnect the click listener
-			document.querySelector(".lyrics-lyrics-container")?.removeEventListener("click", stopPropagation, { capture: true })
-
+			lyricsContainer.removeEventListener("click", stopPropagation, { capture: true })
+			// Remove the text cursor class
+			lyricsContainer.classList.remove("copy-lyrics-selecting")
 			return
 		}
 		if (isSelecting) return
@@ -61,14 +69,12 @@ async function main() {
 		const lyricsContainer = document.querySelector(".lyrics-lyrics-container") as HTMLElement
 		// Add the selecting class that changes the cursor
 		lyricsContainer.classList.add("copy-lyrics-selecting")
-		// Make the selection visible
-		lyricsContainer.classList.remove("copy-lyrics-deselection-animation")
+		// Remove and stop any existing deselection animation
+		CSS.highlights.delete("copy-lyrics-deselection-highlight")
+		selectionAnimationIndex++
 		// Prevent the lyrics from being clickable
 		lyricsContainer.addEventListener("click", stopPropagation, { capture: true })
 		// Later disconnect it when the selection ends
-
-		// Stop any ongoing animations
-		selectionAnimationIndex++
 	})
 
 	// We don't want to continue animating the deselection animation
@@ -97,15 +103,27 @@ async function main() {
 		// so we can detect if it's still being shown
 		Spicetify.showNotification(loc[Spicetify.Locale._locale] || loc[FALLBACK_LANG])
 
-		// Add the class copy-lyrics-deselection-animation to all selected nodes
-		// This will trigger a CSS animation that will slowly fade out the selected lyrics
-		lyricsContainer.classList.add("copy-lyrics-deselection-animation")
-		// Remove the selecting class that changes the cursor
-		document.querySelector(".lyrics-lyrics-container")?.classList.remove("copy-lyrics-selecting")
-
 		// Handle animation
-		// Go from rgba(255, 255, 0, 255) to rgba(255, 255, 255, 0)
-		const startColor = [255, 255, 0, 1]
+		// Highlight the copied text
+		// https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API
+		// Pretty experimental technology
+
+		const selection = window.getSelection() as Selection
+
+		// Delete existing highlight
+		//CSS.highlights.delete("copy-lyrics-deselection-highlight")
+		const highlight = new Highlight(selection.getRangeAt(0))
+		CSS.highlights.set("copy-lyrics-deselection-highlight", highlight)
+
+		// Remove selection
+		selection.empty()
+
+		// Handle animation for the highlight
+		// Go from rgba(255, 255, 0, 0.7) to rgba(255, 255, 255, 0)
+		// Because of what's probably a bug
+		// the ::highlight pseudo-element doesn't inherit variables
+		// so we have to animate the rule directly
+		const startColor = [255, 255, 0, 0.7]
 		const endColor = [255, 255, 255, 0]
 		const start = performance.now()
 		const duration = 500
@@ -125,7 +143,7 @@ async function main() {
 				color = startColor.map((c, i) => lerp(c, endColor[i], progress))
 				requestAnimationFrame(update)
 			}
-			lyricsContainer.style.setProperty("--copy-lyrics-selection-color", `rgba(${color.join(", ")})`)
+			InjectedHighlightRule.style.backgroundColor = `rgba(${color.join(", ")})`
 		}
 		requestAnimationFrame(update)
 	}
