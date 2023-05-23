@@ -18,6 +18,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-inner-declarations": "off",
         "indent": [
             "error",
             "tab",
