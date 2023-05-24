@@ -71,7 +71,7 @@ async function main() {
 		interactive: true,
 		allowHTML: true,
 		offset: [0, 30],
-		interactiveDebounce: 50000,
+		//interactiveDebounce: 50000,
 	}
 
 	let tippyInstance: unknown = null
