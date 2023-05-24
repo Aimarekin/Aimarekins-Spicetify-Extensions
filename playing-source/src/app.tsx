@@ -29,7 +29,7 @@ async function main() {
 		) as unknown as HTMLDivElement
 
 		// Bind to the "go to source link" function
-		albumOverlay.querySelectorAll("a").forEach((link) => link.addEventListener("click", goToLinkSource))
+		albumOverlay.querySelectorAll("a").forEach( (link) => link.addEventListener("click", goToLinkSource) )
 
 		return albumOverlay
 	}
@@ -56,9 +56,9 @@ async function main() {
 	const albumOverlays = generateBindsFor(
 		createAlbumOverlay,
 		[
-			[ ".main-downloadClient-container", ".main-coverSlotExpanded-container" ],
+			[ ".main-downloadClient-container", ".cover-art" ],
 			[ ".UalNRoO1omHtEEniypS5", ".cover-art" ],
-			//[ ".Root__top-container", ".main-nowPlayingView-coverArt" ], //Doesn't work just yet
+			[ ".Root__top-container", ".main-nowPlayingView-coverArt .cover-art" ],
 		]
 	)
 
@@ -135,10 +135,11 @@ async function main() {
 	)
 	function goToLinkSource(e: MouseEvent) {
 		const link = (e.currentTarget as HTMLAnchorElement).getAttribute("href")
-		if (link != "#") return
+		if (link != "void") return
 
 		const linkFunction = getContextLink()
 		if (typeof linkFunction === "function") {
+			e.preventDefault()
 			linkFunction()
 		}
 	}
@@ -160,7 +161,7 @@ async function main() {
 			let link = getContextLink()
 			// if link is a string
 			if (link !== null) {
-				if (typeof link !== "string") link = "#";
+				if (typeof link !== "string") link = "void";
 				(sourceText === null ? overlayHeader : overlaySource).setAttribute("href", link)
 			}
 		}

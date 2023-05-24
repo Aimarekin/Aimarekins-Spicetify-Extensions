@@ -20,7 +20,7 @@
     color: var(--spice-text);
 }
 
-.main-coverSlotExpanded-container, .main-nowPlayingView-coverArt {
+.cover-art {
     &:hover, &:focus-within {
         & .playing-source-ao-container {
             filter: opacity(1);
