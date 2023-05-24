@@ -1,0 +1,29 @@
+{
+    "playing_from": "Playing from",
+
+    "playing_PLAYLIST": "Playing from Playlist",
+    "playing_SEARCH": "Playing from Search",
+    "playing_ALBUM": "Playing from Album",
+    "playing_ARTIST": "Playing from Artist",
+    "playing_RECOMMENDED": "Playing recommended based on",
+    "playing_STATION": "Playing from Radio based on",
+    "playing_EPISODE": "Playing Episode",
+    "playing_PODCAST": "Playing from Podcast",
+    "playing_ARTIST_LIKED_SONGS": "Playing Liked Songs from",
+    "playing_FOLDER": "Playing from Folder",
+
+    "playing_TRACK": "Playing Track",
+    "playing_RECOMMENDED_generic": "Playing recommended",
+    "playing_RECENT_SEARCHED": "Playing from recent searches",
+    "playing_USER_TOP_TRACKS": "Playing from Top Tracks",
+    "playing_LIKED_SONGS": "Playing from Liked Songs",
+    "playing_QUEUE": "Playing from Queue",
+    "playing_LOCAL_FILES": "Playing from Local Files",
+    "playing_AD": "Advertisement",
+
+    "playing_UNKNOWN": "Currently playing",
+
+    "search_format": "\"{0}\"",
+    "unknown": "Unknown",
+    "loading": "..."
+}

@@ -1,0 +1,97 @@
+.playing-source-ao-relative-positioner {
+    position: relative;
+}
+
+.playing-source-ao-container {
+    transition: filter 0.1s ease-in-out;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    --playing-source-ao-bkg-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    filter: opacity(0);
+    color: var(--spice-text);
+}
+
+.main-coverSlotExpanded-container, .main-nowPlayingView-coverArt {
+    &:hover, &:focus-within {
+        & .playing-source-ao-container {
+            filter: opacity(1);
+        }
+    }
+}
+
+.playing-source-ao-container::before {
+    content: "";
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(transparent, var(--playing-source-ao-bkg-color));
+}
+
+.playing-source-ao {
+    width: 100%;
+    height: min-content;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    background: var(--playing-source-ao-bkg-color);
+    padding: 10px;
+    padding-top: 0;
+    gap: 5px;
+    text-shadow: 0 0 4px black;
+}
+
+.playing-source-ao-header {
+    font-weight: 100;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.playing-source-ao-source {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.playing-source-ao-header, .playing-source-ao-source, .playing-source-tt-header, .playing-source-tt-source {
+    &[href] {
+        pointer-events: auto;
+        &:hover {
+            text-decoration: underline;
+            /* cursor: pointer; */
+        }
+    }
+    &:not([href]) {
+        text-decoration: none;
+    }
+}
+
+.playing-source-tt {
+    text-align: center
+}
+
+.playing-source-tt-header {
+    font-style: italic;
+}
+
+.playing-source-tt-source {
+    font-weight: bold;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.playing-source-hidden {
+    display: none !important;
+}
