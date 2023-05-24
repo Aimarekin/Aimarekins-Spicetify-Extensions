@@ -14,18 +14,25 @@ async function main() {
 	}
 	
 	// Create album overlay
-	const createAlbumOverlay = () => (
-		<div className="playing-source-ao-container">
-			<div className="playing-source-ao">
-				<a className="playing-source-ao-header">
-					PLAYING FROM
-				</a>
-				<a className="playing-source-ao-source">
-					...
-				</a>
+	const createAlbumOverlay = () => {
+		const albumOverlay = (
+			<div className="playing-source-ao-container">
+				<div className="playing-source-ao">
+					<a className="playing-source-ao-header">
+						PLAYING FROM
+					</a>
+					<a className="playing-source-ao-source">
+						...
+					</a>
+				</div>
 			</div>
-		</div>
-	) as unknown as HTMLDivElement
+		) as unknown as HTMLDivElement
+
+		// Bind to the "go to source link" function
+		albumOverlay.querySelectorAll("a").forEach((link) => link.addEventListener("click", goToLinkSource))
+
+		return albumOverlay
+	}
 	
 	// For expanded:
 	// OLD GUI:
@@ -64,6 +71,7 @@ async function main() {
 		interactive: true,
 		allowHTML: true,
 		offset: [0, 30],
+		interactiveDebounce: 50000,
 	}
 
 	let tippyInstance: unknown = null
@@ -79,9 +87,10 @@ async function main() {
 			</div>
 		</div>
 	) as unknown as HTMLDivElement
-	const tippyHeader = tippyContents.querySelector(".playing-source-tt-header") as HTMLSpanElement
+	const tippyHeader = tippyContents.querySelector(".playing-source-tt-header") as HTMLAnchorElement
 	const tippySourceContainer = tippyContents.querySelector(".playing-source-tt-source-container") as HTMLDivElement
 	const tippySource = tippySourceContainer.querySelector(".playing-source-tt-source") as HTMLAnchorElement
+	[ tippyHeader, tippySource ].forEach((link) => link.addEventListener("click", goToLinkSource))
 
 	waitForElm(".main-nowPlayingBar-left").then((collapsedParent) => {
 		let currentCollapsedParent : Element | null = null
@@ -119,31 +128,48 @@ async function main() {
 
 	const presetSourceLinks = {
 		[SourceType.AD]: null,
-		[SourceType.QUEUE]: null,
+		[SourceType.QUEUE]: () => { Spicetify.Platform.History.push("/queue") },
 	}
-	const getContextLink = (context: SourceInfo = getContext()) => (
+	const getContextLink = (context: SourceInfo = getContext()): string | VoidFunction => (
 		context.type in presetSourceLinks ? presetSourceLinks[context.type] : Spicetify.Player.data?.context_uri
 	)
+	function goToLinkSource(e: MouseEvent) {
+		const link = (e.currentTarget as HTMLAnchorElement).getAttribute("href")
+		if (link != "#") return
+
+		const linkFunction = getContextLink()
+		if (typeof linkFunction === "function") {
+			linkFunction()
+		}
+	}
 
 	function setShownText(headerText: string, sourceText: string | null) {
 		tippyHeader.innerText = headerText
 		tippySource.innerText = sourceText || ""
 
-		albumOverlays.forEach((el:HTMLElement) => {
-			const overlayHeader = el.querySelector(".playing-source-ao-header") as HTMLAnchorElement
-			const overlaySource = el.querySelector(".playing-source-ao-source") as HTMLAnchorElement
 
+		function setForElements(overlayHeader: HTMLAnchorElement, overlaySource: HTMLAnchorElement) {
 			overlayHeader.innerText = headerText
 			overlaySource.innerText = sourceText || ""
 
 			overlaySource.classList[headerText === null ? "add" : "remove"]("playing-source-hidden")
+			// TO IMPLEMENT:
+			// LINK CAN BE A FUNCTION
 			overlaySource.removeAttribute("href")
 			overlayHeader.removeAttribute("href")
-			const link = getContextLink()
-			if (link) {
+			let link = getContextLink()
+			// if link is a string
+			if (link !== null) {
+				if (typeof link !== "string") link = "#";
 				(sourceText === null ? overlayHeader : overlaySource).setAttribute("href", link)
 			}
-		})
+		}
+
+		albumOverlays.forEach((el:HTMLElement) => setForElements(
+			el.querySelector(".playing-source-ao-header") as HTMLAnchorElement,
+			el.querySelector(".playing-source-ao-source") as HTMLAnchorElement
+		))
+		setForElements(tippyHeader, tippySource)
 	}
 
 	let sourceUpdateIndex = 0

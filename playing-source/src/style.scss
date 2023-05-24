@@ -63,14 +63,16 @@
     max-width: 100%;
 }
 
-.playing-source-ao-header, .playing-source-ao-source{
-    text-decoration: none;
+.playing-source-ao-header, .playing-source-ao-source, .playing-source-tt-header, .playing-source-tt-source {
     &[href] {
         pointer-events: auto;
         &:hover {
             text-decoration: underline;
-            cursor: pointer;
+            /* cursor: pointer; */
         }
+    }
+    &:not([href]) {
+        text-decoration: none;
     }
 }
 
