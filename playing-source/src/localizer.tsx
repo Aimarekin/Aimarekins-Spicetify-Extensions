@@ -10,7 +10,7 @@ const stringStorage: { [lang in SupportedLangs]: { [key:string]: string}} = {
 }
 
 export function Translate(key: string, locale?: SupportedLangs): string {
-	locale = locale || Spicetify.Locale._locale as SupportedLangs
+	locale = locale || Spicetify.Locale.getLocale() as SupportedLangs
 
 	if (stringStorage[locale]) {
 		return stringStorage[locale][key] || key

@@ -101,7 +101,7 @@ async function main() {
 		// Show a notification
 		// This notification has an ID of "copy-lyrics-notification"
 		// so we can detect if it's still being shown
-		Spicetify.showNotification(loc[Spicetify.Locale._locale] || loc[FALLBACK_LANG])
+		Spicetify.showNotification(loc[Spicetify.Locale.getLocale()] || loc[FALLBACK_LANG])
 
 		// Handle animation
 		// Highlight the copied text
