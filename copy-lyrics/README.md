@@ -14,4 +14,8 @@ With Spicetify Marketplace, or manually with the file dist/copy-lyrics.js
 ## Translating
 This extension is localized. See the files under loc.json to translate this extension into your language.
 
+---
+
+[Source code available on GitHub](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/tree/main/copy-lyrics)
+
 [![Github Stars badge](https://img.shields.io/github/stars/Aimarekin/Aimarekins-Spicetify-Extensions?logo=github&style=social)](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions)

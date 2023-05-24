@@ -19,4 +19,8 @@ If you're a theme developer, you can modify the CSS rules of this extension. See
 ## Translating
 This extension is localized. See the files under src/loc to translate this extension into your language.
 
+---
+
+[Source code available on GitHub](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/tree/main/playing-source)
+
 [![Github Stars badge](https://img.shields.io/github/stars/Aimarekin/Aimarekins-Spicetify-Extensions?logo=github&style=social)](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions)
