@@ -9,10 +9,18 @@ The [Lyrics Plus Custom App](https://spicetify.app/docs/advanced-usage/custom-ap
 ![Demo](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/assets/demo.gif?raw=true)
 
 ## Installation
-With Spicetify Marketplace, or manually with the file dist/copy-lyrics.js
+With Spicetify Marketplace, install the "Copy Lyrics" extension. Or manually, by placing the file [dist/copy-lyrics.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/dist/copy-lyrics.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
+
+## Theming
+If you are a theme developer, or would like to modify the aspect of this extension, you can modify the CSS rules applied by this extension. Head to [src/style.css](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/src/style.css) to see the applied CSS.
+
+Unfortunately, due to what's most likely errors with variable inheritance on the ::highlight() pseudo-element, the deselection animation after lyrics are copied can not be modified.
 
 ## Translating
-This extension is localized. See the files under loc.json to translate this extension into your language.
+This extension is localized. You can add a message saying "Copied to clipboard!" in your language in the file [src/loc.json](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/src/loc.json)
+
+## Building
+This extension has been made with (Spicetify Creator)[https://spicetify.app/docs/development/spicetify-creator/]. Run `npm run build-local` to compile it into Javascript.
 
 ---
 
