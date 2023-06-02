@@ -1,97 +1,59 @@
-.playing-source-ao-relative-positioner {
-    position: relative;
-}
-
-.playing-source-ao-container {
-    transition: filter 0.1s ease-in-out;
-    pointer-events: none;
-    position: absolute;
-    display: block;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    --playing-source-ao-bkg-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-end;
-    filter: opacity(0);
-    color: var(--spice-text);
-}
-
-.main-coverSlotExpanded-container, .main-nowPlayingView-coverArt {
-    &:hover, &:focus-within {
-        & .playing-source-ao-container {
-            filter: opacity(1);
-        }
+@keyframes previewify-modal-popup {
+    from {
+        filter: opacity(0);
+        transform: translateY(10px);
+    }
+    to {
+        filter: opacity(1);
+        transform: translateY(0);
     }
 }
 
-.playing-source-ao-container::before {
-    content: "";
-    width: 100%;
-    height: 50px;
-    background: linear-gradient(transparent, var(--playing-source-ao-bkg-color));
+.previewify-modal {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    animation: previewify-modal-popup 0.3s ease-in-out !important;
+    width: 300px;
+    height: 100px;
+    --previewify-modal-bg: var(--spice-card);
+    background-color: var(--previewify-modal-bg);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--spice-shadow);
 }
 
-.playing-source-ao {
-    width: 100%;
-    height: min-content;
+.previewify-modal__container {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas:
+        "cover title"
+        "cover authors"
+        "cover controls" ;
+    gap: 5px;
+    margin: 5px;
+}
+
+.previewify-modal__image {
+    grid-area: cover;
+    height: 100px;
+    width: 100px;
+    object-fit: scale-down;
+    min-width: 0;
+    min-height: 0;
+}
+
+.previewify-modal__title {
+    grid-area: title;
+}
+
+.previewify-modal__authors {
+    grid-area: authors;
+}
+
+.previewify-modal__controls {
+    grid-area: controls;
     display: flex;
-    flex-flow: column nowrap;
     justify-content: flex-end;
     align-items: center;
-    background: var(--playing-source-ao-bkg-color);
-    padding: 10px;
-    padding-top: 0;
-    gap: 5px;
-    text-shadow: 0 0 4px black;
-}
-
-.playing-source-ao-header {
-    font-weight: 100;
-    font-size: 0.8em;
-    text-transform: uppercase;
-}
-
-.playing-source-ao-source {
-    font-weight: bold;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-    white-space: nowrap;
-    max-width: 100%;
-}
-
-.playing-source-ao-header, .playing-source-ao-source, .playing-source-tt-header, .playing-source-tt-source {
-    &[href] {
-        pointer-events: auto;
-        &:hover {
-            text-decoration: underline;
-            /* cursor: pointer; */
-        }
-    }
-    &:not([href]) {
-        text-decoration: none;
-    }
-}
-
-.playing-source-tt {
-    text-align: center
-}
-
-.playing-source-tt-header {
-    font-style: italic;
-}
-
-.playing-source-tt-source {
-    font-weight: bold;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 200px;
-}
-
-.playing-source-hidden {
-    display: none !important;
 }
