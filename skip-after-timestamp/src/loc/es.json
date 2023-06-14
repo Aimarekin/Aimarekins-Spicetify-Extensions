@@ -1,0 +1,9 @@
+{
+    "skip_after_timestamp": "Reproducir siguiente después de",
+
+    "will_skip_after": "Las canciones terminarán depues de reproducirse después de {0} segundos",
+
+    "right_click_remove": "Haz click derecho para desactivar",
+
+    "disabled_once": "Desactivado para esta reproducción"
+}

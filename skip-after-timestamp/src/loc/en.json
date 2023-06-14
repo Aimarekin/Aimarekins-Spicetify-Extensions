@@ -1,0 +1,12 @@
+{
+    "skip_after_timestamp": "Skip after timestamp",
+
+    "will_skip_after_time": "Tracks will now be skipped after {0}",
+    "will_skip_after_percentage": "Tracks will now be skipped after {0} completed",
+
+    "disabled_auto_skip": "Disabled auto skip",
+
+    "will_not_skip_this": "This track will not be skipped",
+
+    "disabled_once": "Disabled for this playthrough once"
+}

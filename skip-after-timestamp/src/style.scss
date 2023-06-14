@@ -1,0 +1,65 @@
+.skip-after-timestamp-marker {
+    position: absolute;
+    height: 20px;
+    top: 50%;
+    transform: translate(-5px, -50%);
+    z-index: 1;
+    overflow: visible;
+
+    &:not(.skip-after-timestamp-active):not(.skip-after-timestamp-dragging) {
+        display: none;
+    }
+
+    &:not(.skip-after-timestamp-dragging) {
+        transition: left 0.25s ease-in-out;
+    }
+
+    &::after {
+        content: "";
+
+        width: 0;
+        height: 0;
+        border-top: 100% solid transparent;
+        border-bottom: 100% solid transparent; 
+
+        border-left: 100% solid var(--timestamp-color); 
+    }
+
+    &:hover {
+        cursor: pointer;
+        .skip-after-timestamp-button {
+            background-color: rgba(0, 0, 0, 0.2)
+        }
+    }
+
+    &:active .skip-after-timestamp-button {
+        background-color: rgba(0, 0, 0, 0.4)
+    }
+}
+
+.skip-after-timestamp-container {
+    --timestamp-color: var(--spice-notification);
+    background-color: var(--timestamp-color);
+    filter: drop-shadow(0 0 6px var(--spice-shadow));
+    width: 20px;
+    height: 100%;
+}
+
+.skip-after-timestamp-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 0;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > svg {
+        fill: currentColor;
+    }
+}
