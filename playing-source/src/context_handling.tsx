@@ -1,4 +1,5 @@
-import { storeUriNameChache } from "./util"
+import { setUriCache } from "./name_handler"
+import { getBase62ForURI } from "./util";
 
 export enum SourceType {
 	TRACK = "TRACK",
@@ -31,7 +32,29 @@ let lastValidSearchUri: string | null = null
 const warnedNotSupported = new Set<string>()
 
 export function getContext(): SourceInfo {
+	const returned = _getContext()
+
+	if (returned.type == SourceType.UNKNOWN) {
+		const RawURI = Spicetify.Player.data?.context_uri
+		const CtxURI = Spicetify.URI.from(RawURI)
+		const provider = Spicetify.Player.data?.track?.provider
+
+		const fullIdentifier = `${provider}@${RawURI}`
+		if (!warnedNotSupported.has(fullIdentifier)) {
+			console.warn("PLAYING-SOURCE: Unknown context for provider", provider, "with URI", RawURI, "\n", CtxURI, Spicetify.Player.data)
+			warnedNotSupported.add(fullIdentifier)
+		}
+	}
+
+	return returned
+}
+
+function _getContext(): SourceInfo {
 	const RawURI = Spicetify.Player.data?.context_uri
+
+	// The latest version doesn't correctly process the local files URI
+	if (RawURI == "spotify:internal:local-files") return { type: SourceType.LOCAL_FILES }
+
 	const CtxURI = Spicetify.URI.from(RawURI)
 	if (!CtxURI) return { type: SourceType.UNKNOWN }
 
@@ -42,7 +65,7 @@ export function getContext(): SourceInfo {
 	// This function makes sure we don't accept "undefined" as something's name
 	function storeToCache(name: string | undefined) {
 		if (name !== undefined) {
-			storeUriNameChache(RawURI, name)
+			setUriCache(RawURI, name)
 		}
 	}
 
@@ -111,7 +134,7 @@ export function getContext(): SourceInfo {
 				case Spicetify.URI.Type.SEARCH:
 					lastValidSearchUri = Spicetify.Player.data?.track?.uri || null
 					if (lastValidSearchUri) {
-						storeUriNameChache(lastValidSearchUri, Spicetify.Player.data?.track?.metadata?.title)
+						setUriCache(lastValidSearchUri, (Spicetify.Player.data?.track?.metadata?.title as string | undefined) || null)
 					}
 					if (CtxURI?.query == "") {
 						return { type: SourceType.RECENT_SEARCHED }
@@ -128,7 +151,7 @@ export function getContext(): SourceInfo {
 						uri: RawURI
 					}
 				case Spicetify.URI.Type.APPLICATION:
-					if (CtxURI._base62Id === "local-files") {
+					if (getBase62ForURI(CtxURI) === "local-files") {
 						return { type: SourceType.LOCAL_FILES }
 					}
 			}
@@ -147,10 +170,5 @@ export function getContext(): SourceInfo {
 			return { type: SourceType.QUEUE }
 	}
 
-	const fullIdentifier = `${provider}@${RawURI}`
-	if (!warnedNotSupported.has(fullIdentifier)) {
-		console.warn("PLAYING-SOURCE: Unknown context for provider", provider, "with URI", RawURI, "\n", CtxURI, Spicetify.Player.data)
-		warnedNotSupported.add(fullIdentifier)
-	}
 	return { type: SourceType.UNKNOWN }
 }

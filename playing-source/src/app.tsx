@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createElement, createFragment } from "./jsx"
-import { waitForElm, generateBindsFor, getUriName } from "./util"
+import { waitForElm, generateBindsFor } from "./util"
+import { getUriName } from "./name_handler"
 import { Translate } from "./localizer"
 import { SourceType, SourceInfo, getContext } from "./context_handling"
 import "./format_unicorn"
@@ -59,7 +60,8 @@ async function main() {
 			[ ".main-downloadClient-container", ".cover-art" ],
 			[ ".UalNRoO1omHtEEniypS5", ".cover-art" ],
 			[ ".Root__top-container", ".main-nowPlayingView-coverArt .cover-art" ],
-		]
+		],
+		0
 	)
 
 	/* BINDING TO COLLAPSED COVER */
@@ -92,7 +94,7 @@ async function main() {
 	const tippySource = tippySourceContainer.querySelector(".playing-source-tt-source") as HTMLAnchorElement
 	[ tippyHeader, tippySource ].forEach((link) => link.addEventListener("click", goToLinkSource))
 
-	waitForElm(".main-nowPlayingBar-left").then((collapsedParent) => {
+	waitForElm(".main-nowPlayingBar-left", undefined, 0).then((collapsedParent) => {
 		let currentCollapsedParent : Element | null = null
 		function appendCollapsedOverlay() {
 			const el = collapsedParent.querySelector(".main-coverSlotCollapsed-container")
