@@ -35,29 +35,35 @@ async function _getUriName(SourceURI:string): NamePromise {
 	const URI = Spicetify.URI.from(SourceURI)
 	if (URI === null) return null
 	const base62 = getBase62ForURI(URI)
-	if (base62 === null) return null
 
 	switch (URI.type) {
 		case Spicetify.URI.Type.TRACK:
+			if (!base62) return null
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/tracks/${base62}`))?.name || null
 		case Spicetify.URI.Type.PLAYLIST:
 		case Spicetify.URI.Type.PLAYLIST_V2:
+			if (!base62) return null
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/playlists/${base62}?fields=name`))?.name || null
 		case Spicetify.URI.Type.ALBUM:
 		case Spicetify.URI.Type.COLLECTION_ALBUM:
+			if (!base62) return null
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/albums/${base62}`))?.name || null
 		case Spicetify.URI.Type.ARTIST:
 		case Spicetify.URI.Type.COLLECTION_ARTIST:
+			if (!base62) return null
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/artists/${base62}`))?.name || null
 		case Spicetify.URI.Type.EPISODE:
+			if (!base62) return null
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/episodes/${base62}`))?.name || null
 		case Spicetify.URI.Type.SHOW:
+			if (!base62) return null
 			return (await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/shows/${base62}`))?.name || null
 		case Spicetify.URI.Type.STATION:
             // Station is "radio"
             // Get name of where the station is from
 			return await getUriName("spotify:" + SourceURI.substring("spotify:station:".length))
 		case Spicetify.URI.Type.PROFILE: {
+			if (!base62) return null
 			const res = await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/users/${base62}`)
 			return res?.display_name || res?.id || null
 		}
