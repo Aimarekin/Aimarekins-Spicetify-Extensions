@@ -1,5 +1,5 @@
 import { Translate } from "./localizer"
-import { getBase62ForURI } from "./util"
+import { getBase62ForURI, getURIFromStation } from "./util"
 
 export type NamePromise = Promise<string | null>
 
@@ -19,7 +19,7 @@ export function setUriCache(URI: string, name: string | null) {
     cachedName = new Promise((resolve) => resolve(name))
 }
 
-export function getUriName(URI:string | undefined): NamePromise {
+export function getUriName(URI: string | null): NamePromise {
 	if (!URI) return new Promise((resolve) => resolve(null))
 
     if (URI == cachedURI) return cachedName
@@ -29,7 +29,7 @@ export function getUriName(URI:string | undefined): NamePromise {
     return cachedName
 }
 
-async function _getUriName(SourceURI:string): NamePromise {
+async function _getUriName(SourceURI: string): NamePromise {
 	console.log("FETCHING NAME FOR", SourceURI)
 
 	const URI = Spicetify.URI.from(SourceURI)
@@ -61,7 +61,7 @@ async function _getUriName(SourceURI:string): NamePromise {
 		case Spicetify.URI.Type.STATION:
             // Station is "radio"
             // Get name of where the station is from
-			return await getUriName("spotify:" + SourceURI.substring("spotify:station:".length))
+			return await getUriName(getURIFromStation(SourceURI))
 		case Spicetify.URI.Type.PROFILE: {
 			if (!base62) return null
 			const res = await Spicetify.CosmosAsync.get(`https://api.spotify.com/v1/users/${base62}`)
@@ -71,7 +71,7 @@ async function _getUriName(SourceURI:string): NamePromise {
 			// Getting this is a little more complicated. We have to traverse the user's playlists and find the one that matches the folder's ID
 			const traverse = (item): string | undefined => {
 				if (item.type == "folder") {
-					if (getBase62ForURI(Spicetify.URI.from(item.uri) as Spicetify.URI) == base62) return item.name
+					if (getBase62ForURI(item.uri) == base62) return item.name
 					for (const child of item.items) {
 						const res = traverse(child)
 						if (res) return res

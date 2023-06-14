@@ -1,5 +1,5 @@
 import { setUriCache } from "./name_handler"
-import { getBase62ForURI } from "./util";
+import { getBase62ForURI, getURIFromStation } from "./util";
 
 export enum SourceType {
 	TRACK = "TRACK",
@@ -29,7 +29,6 @@ export interface SourceInfo {
 	uri?: string;
 }
 
-let lastValidSearchUri: string | null = null
 const warnedNotSupported = new Set<string>()
 
 export function getContext(): SourceInfo {
@@ -133,10 +132,7 @@ function _getContext(): SourceInfo {
 						uri: RawURI
 					}
 				case Spicetify.URI.Type.SEARCH:
-					lastValidSearchUri = Spicetify.Player.data?.track?.uri || null
-					if (lastValidSearchUri) {
-						setUriCache(lastValidSearchUri, (Spicetify.Player.data?.track?.metadata?.title as string | undefined) || null)
-					}
+
 					if (CtxURI?.query == "") {
 						return { type: SourceType.RECENT_SEARCHED }
 					}
@@ -160,18 +156,24 @@ function _getContext(): SourceInfo {
 		case "ad":
 			return { type: SourceType.AD }
 		case "autoplay":
-			if (CtxURI.type == Spicetify.URI.Type.SEARCH) {
-				// Spotify keeps the search URI as context when autoplaying,
-				// instead of what it's autoplaying from.
-				// This is a workaround to get the last valid search URI.
-				return lastValidSearchUri ? {
-					type: SourceType.RECOMMENDED,
-					uri: lastValidSearchUri
-				} : { type: SourceType.RECOMMENDED_NO_SOURCE }
-			}
-			return {
-				type: SourceType.RECOMMENDED,
-				uri: RawURI
+			// When playing from autoplay,
+			// the context_uri in the track metadata is more reliable
+			const MetadataURI = Spicetify.Player.data?.track?.metadata?.context_uri || RawURI
+			const MetadataCtxURI = Spicetify.URI.from(MetadataURI)
+
+			switch (MetadataCtxURI?.type) {
+				case Spicetify.URI.Type.SEARCH:
+					return { type: SourceType.RECOMMENDED_NO_SOURCE }
+				case Spicetify.URI.Type.STATION:
+					return {
+						type: SourceType.RECOMMENDED,
+						uri: getURIFromStation(MetadataURI) as string
+					}
+				default:
+					return {
+						type: SourceType.RECOMMENDED,
+						uri: MetadataURI
+					}
 			}
 		case "queue":
 			return { type: SourceType.QUEUE }

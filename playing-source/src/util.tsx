@@ -63,8 +63,18 @@ export function generateBindsFor(generator: () => HTMLElement, options: string[]
 	return generated
 }
 
-export function getBase62ForURI(uri: Spicetify.URI): string | null {
+export function getBase62ForURI(URI: Spicetify.URI | any): string | null {
 	// Accross different Spotify versions, the URI format has changed.
 	// Not sure if this is compatible for all of them, hope so
-	return (uri.hasBase62Id ? uri.id : uri._base62Id) || null
+	let AdaptedURI = Spicetify.URI.from(URI)
+	if (!AdaptedURI) return null
+
+	return (AdaptedURI.hasBase62Id ? AdaptedURI.id : AdaptedURI._base62Id) || null
+}
+
+export function getURIFromStation(URI: Spicetify.URI | any): string | null {
+	let AdaptedURI = Spicetify.URI.from(URI)
+	if (!AdaptedURI || AdaptedURI.type != Spicetify.URI.Type.STATION) return null
+
+	return "spotify:" + AdaptedURI.toString().substring("spotify:station:".length)
 }

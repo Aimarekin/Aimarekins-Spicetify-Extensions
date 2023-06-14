@@ -189,7 +189,7 @@ async function main() {
 		sourceUpdateIndex++
 
 		headerText = Translate("playing_" + source.type)
-		sourceText = sourcesWithoutName.has(source.type) ? new Promise((resolve) => resolve(null)) : getUriName(source.uri)
+		sourceText = (sourcesWithoutName.has(source.type) || source.uri === undefined) ? new Promise((resolve) => resolve(null)) : getUriName(source.uri)
 
 		setShownText(headerText, Translate("loading"))
 
