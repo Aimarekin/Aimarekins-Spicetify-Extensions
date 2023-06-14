@@ -6,6 +6,7 @@
     "playing_ALBUM": "Playing from Album",
     "playing_ARTIST": "Playing from Artist",
     "playing_RECOMMENDED": "Playing recommended based on",
+    "playing_RECOMMENDED_NO_SOURCE": "Playing recommendations",
     "playing_STATION": "Playing from Radio based on",
     "playing_EPISODE": "Playing Episode",
     "playing_PODCAST": "Playing from Podcast",
@@ -13,7 +14,6 @@
     "playing_FOLDER": "Playing from Folder",
 
     "playing_TRACK": "Playing Track",
-    "playing_RECOMMENDED_generic": "Playing recommended",
     "playing_RECENT_SEARCHED": "Playing from recent searches",
     "playing_USER_TOP_TRACKS": "Playing from Top Tracks",
     "playing_LIKED_SONGS": "Playing from Liked Songs",

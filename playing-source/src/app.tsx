@@ -120,6 +120,7 @@ async function main() {
 	const sourcesWithoutName = new Set([
 		SourceType.TRACK,
 		SourceType.RECENT_SEARCHED,
+		SourceType.RECOMMENDED_NO_SOURCE,
 		SourceType.AD,
 		SourceType.USER_TOP_TRACKS,
 		SourceType.LIKED_SONGS,
@@ -187,43 +188,18 @@ async function main() {
 		let sourceText: Promisable<string | null> = null
 		sourceUpdateIndex++
 
-		switch (source.type) {
-			case SourceType.TRACK:
-				headerText = Translate("playing_TRACK")
-				break
-			case SourceType.RECOMMENDED:
-				if (source?.uri) {
-					headerText = Translate("playing_RECOMMENDED")
-					sourceText = getUriName(source.uri)
-				}
-				else {
-					headerText = Translate("playing_RECOMMENDED_generic")
-				}
-				break
-			default:
-				headerText = Translate("playing_" + source.type)
-				sourceText = getUriName(source.uri)
-				break
-		}
+		headerText = Translate("playing_" + source.type)
+		sourceText = sourcesWithoutName.has(source.type) ? new Promise((resolve) => resolve(null)) : getUriName(source.uri)
 
-		if (sourcesWithoutName.has(source.type)) {
-			sourceText = null
-		}
-		else if (sourceText === null) {
-			sourceText = Translate("unknown")
-		}
+		setShownText(headerText, Translate("loading"))
 
-		setShownText(headerText, sourceText instanceof Promise ? Translate("loading") : sourceText)
+		const index = sourceUpdateIndex
+		sourceText.then((resolved) => {
+			// Don't update if the source has changed
+			if (index !== sourceUpdateIndex) return
 
-		if (sourceText instanceof Promise) {
-			const index = sourceUpdateIndex
-			sourceText.then((resolved) => {
-				// Don't update if the source has changed
-				if (index !== sourceUpdateIndex) return
-
-				setShownText(headerText, resolved)
-			})
-		}
+			setShownText(headerText, resolved)
+		})
 	}
 
 	Spicetify.Player.addEventListener("onprogress", updateSource)

@@ -71,11 +71,11 @@ async function _getUriName(SourceURI:string): NamePromise {
 			// Getting this is a little more complicated. We have to traverse the user's playlists and find the one that matches the folder's ID
 			const traverse = (item): string | undefined => {
 				if (item.type == "folder") {
-					if (item.uri == SourceURI) {
-						return item.name
+					if (getBase62ForURI(Spicetify.URI.from(item.uri) as Spicetify.URI) == base62) return item.name
+					for (const child of item.items) {
+						const res = traverse(child)
+						if (res) return res
 					}
-					let returned = item.items.forEach(traverse)
-                    if (returned) return returned
 				}
 			}
 			return traverse(await Spicetify.Platform.RootlistAPI.getContents()) || null

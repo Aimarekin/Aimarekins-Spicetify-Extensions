@@ -6,6 +6,7 @@
     "playing_ALBUM": "Reproduciendo desde Álbum",
     "playing_ARTIST": "Reproduciendo desde Artista",
     "playing_RECOMMENDED": "Reproduciendo recomendados para",
+    "playing_RECOMMENDED_NO_SOURCE": "Reproduciendo recomendaciones",
     "playing_STATION": "Reproduciendo Radio de",
     "playing_EPISODE": "Reproduciendo Episodio",
     "playing_PODCAST": "Reproduciendo desde Podcast",
@@ -13,7 +14,6 @@
     "playing_FOLDER": "Reproduciendo desde Carpeta",
 
     "playing_TRACK": "Reproduciendo Canción",
-    "playing_RECOMMENDED_generic": "Reproduciendo recomendados",
     "playing_RECENT_SEARCHED": "Reproduciendo desde búsquedas recientes",
     "playing_USER_TOP_TRACKS": "Reproduciendo canciones más escuchadas",
     "playing_LIKED_SONGS": "Reproduciendo canciones que te gustan",

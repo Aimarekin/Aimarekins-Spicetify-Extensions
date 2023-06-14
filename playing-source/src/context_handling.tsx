@@ -6,6 +6,7 @@ export enum SourceType {
     EPISODE = "EPISODE",
     PODCAST = "PODCAST",
 	RECOMMENDED = "RECOMMENDED",
+	RECOMMENDED_NO_SOURCE = "RECOMMENDED_NO_SOURCE",
 	PLAYLIST = "PLAYLIST",
 	SEARCH = "SEARCH",
 	RECENT_SEARCHED = "RECENT_SEARCHED",
@@ -159,12 +160,18 @@ function _getContext(): SourceInfo {
 		case "ad":
 			return { type: SourceType.AD }
 		case "autoplay":
-		// Spotify keeps the search URI as context when autoplaying,
-		// instead of what it's autoplaying from.
-		// This is a workaround to get the last valid search URI.
+			if (CtxURI.type == Spicetify.URI.Type.SEARCH) {
+				// Spotify keeps the search URI as context when autoplaying,
+				// instead of what it's autoplaying from.
+				// This is a workaround to get the last valid search URI.
+				return lastValidSearchUri ? {
+					type: SourceType.RECOMMENDED,
+					uri: lastValidSearchUri
+				} : { type: SourceType.RECOMMENDED_NO_SOURCE }
+			}
 			return {
 				type: SourceType.RECOMMENDED,
-				uri: lastValidSearchUri || RawURI
+				uri: RawURI
 			}
 		case "queue":
 			return { type: SourceType.QUEUE }
