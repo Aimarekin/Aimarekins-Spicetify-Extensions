@@ -7,6 +7,8 @@ const FALLBACK_LANG = "en"
 
 const lerp = (a:number, b:number, progress:number) => a * (1 - progress) + b * progress
 
+const LYRICS_CONTAINER_SELECTOR = ".lyrics-lyrics-container, .main-nowPlayingView-lyricsContent"
+
 async function main() {
 	while (!Spicetify?.Platform || !Spicetify?.URI || !Spicetify?.showNotification || !Spicetify?.Locale) {
 		await new Promise(resolve => setTimeout(resolve, 100))
@@ -25,20 +27,23 @@ async function main() {
 	// Get any current valid selection of the lyrics
 	function getSelectedLyrics(): string | null {
 		// The lyrics have been selected if the selection as a string is not empty
-		// and the selection is contained within the lyrics container
+		// and the selection is contained within a lyrics container
 
 		// The lyrics must be displayed
-		const lyricsContainer = document.querySelector(".lyrics-lyrics-container") as HTMLElement
+		const lyricsContainer = document.querySelector(LYRICS_CONTAINER_SELECTOR)
 		if (!lyricsContainer) return null
+
+		// Selection must exist
 		const selection = window.getSelection()
 		if (!selection || selection.rangeCount < 1) return null
-		const selectionText = selection.toString().trim()
-		const selectionRange = selection.getRangeAt(0)
+
 		// The selection text must be non-empty
+		const selectionText = selection.toString().trim()
 		if (!selectionText) return null
-		// The selection must be contained within the os-content container
-		const osContent = document.querySelector(".os-content:has(.lyrics-lyrics-container)")
-		if (!osContent || !osContent.contains(selectionRange.commonAncestorContainer)) return null
+
+		// The selection must be contained within the os-content container, or the playing view
+		const osContent = document.querySelector(".os-content:has(.lyrics-lyrics-container), .main-nowPlayingView-lyricsContent")
+		if (!osContent || !osContent.contains(selection.getRangeAt(0).commonAncestorContainer)) return null
 
 		return selectionText
 	}
@@ -51,30 +56,44 @@ async function main() {
 
 	document.addEventListener("selectionchange", () => {
 		// Check if it's a valid selection
-		if (!getSelectedLyrics()) {
-			isSelecting = false
-			const lyricsContainer = document.querySelector(".lyrics-lyrics-container")
-			if (!lyricsContainer) return
-			// If it's connected, disconnect the click listener
-			lyricsContainer.removeEventListener("click", stopPropagation, { capture: true })
-			// Remove the text cursor class
-			lyricsContainer.classList.remove("copy-lyrics-selecting")
-			return
-		}
-		if (isSelecting) return
+		// and perform corresponding modifications to styling
 
-		isSelecting = true
-		hasBegunSelectionSinceLastCopy = true
-		
-		const lyricsContainer = document.querySelector(".lyrics-lyrics-container") as HTMLElement
-		// Add the selecting class that changes the cursor
-		lyricsContainer.classList.add("copy-lyrics-selecting")
-		// Remove and stop any existing deselection animation
-		CSS.highlights.delete("copy-lyrics-deselection-highlight")
-		selectionAnimationIndex++
-		// Prevent the lyrics from being clickable
-		lyricsContainer.addEventListener("click", stopPropagation, { capture: true })
-		// Later disconnect it when the selection ends
+		// Valid selection
+		if (getSelectedLyrics()) {
+			// Do nothing if already selecting
+			if (isSelecting) return
+
+			isSelecting = true
+			hasBegunSelectionSinceLastCopy = true
+		}
+		// No selection
+		else {
+			// Do nothing if not selecting
+			if (!isSelecting) return
+
+			isSelecting = false
+		}
+
+		// If not returned, this means there was a selection change
+		// and we must perform modifications to styling
+		document.querySelectorAll(LYRICS_CONTAINER_SELECTOR).forEach(lyricsContainer => {
+			if (isSelecting) {
+				// Add the selecting class that changes the cursor
+				lyricsContainer.classList.add("copy-lyrics-selecting")
+				// Remove and stop any existing deselection animation
+				CSS.highlights.delete("copy-lyrics-deselection-highlight")
+				selectionAnimationIndex++
+				// Prevent the lyrics from being clickable
+				lyricsContainer.addEventListener("click", stopPropagation, { capture: true })
+				// Later disconnect it when the selection ends
+			}
+			else {
+				// If it's connected, disconnect the click listener
+				lyricsContainer.removeEventListener("click", stopPropagation, { capture: true })
+				// Remove the text cursor class
+				lyricsContainer.classList.remove("copy-lyrics-selecting")
+			}
+		})
 	})
 
 	// We don't want to continue animating the deselection animation
@@ -86,11 +105,7 @@ async function main() {
 		// Don't allow copying if a selection hasn't started since the last copy
 		if (!hasBegunSelectionSinceLastCopy) return
 
-		// Check if lyrics are currenty being displayed
-		const lyricsContainer = document.querySelector(".lyrics-lyrics-container") as HTMLElement
-		if (!lyricsContainer) return
-
-		// Get the selection and check if it's a selection of the lyrics
+		// Get the selection and check if it's valid
 		const selectionText = getSelectedLyrics()
 		if (!selectionText) return
 
@@ -151,19 +166,16 @@ async function main() {
 	// When the mouse lifts it is a possible selection
 	window.addEventListener("mouseup", tryCopyLyrics)
 
-	// Add CTRL+A shortcut
-	document.addEventListener("keyup", (event) => {
-		if (!(event.ctrlKey && event.code == "KeyA")) return
-
-		// Check if lyrics are currenty being displayed
-		const lyricsContainer = document.querySelector(".lyrics-lyrics-contentContainer")
-		if (!lyricsContainer) return
-
+	function copyAllLyrics() {
 		// Select all lyrics
 		const selection = window.getSelection()
 		if (!selection) return
 
-		event.preventDefault()
+		// Get lyrics container
+		const lyricsContainer = document.querySelector(LYRICS_CONTAINER_SELECTOR)
+		if (!lyricsContainer) return
+
+		// Select it
 		selection.empty()
 		selection.selectAllChildren(lyricsContainer)
 
@@ -173,6 +185,20 @@ async function main() {
 		hasBegunSelectionSinceLastCopy = true
 
 		tryCopyLyrics()
+	}
+
+	// Add CTRL+A shortcut
+	// (only for full-screen lyrics)
+	document.addEventListener("keyup", (event) => {
+		if (!(event.ctrlKey && event.code == "KeyA")) return
+
+		// Check if full-screen lyrics are currenty being displayed
+		const lyricsContainer = document.querySelector(".lyrics-lyrics-contentContainer")
+		if (!lyricsContainer) return
+
+		event.preventDefault()
+
+		copyAllLyrics()
 	})
 }
 	
