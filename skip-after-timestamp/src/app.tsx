@@ -65,13 +65,17 @@ async function main() {
 	document.body.appendChild(marker)
 
 	// Set the CSS variables for remaining relative to the playback bar
+	const observedProperties = ["left", "top", "right", "bottom"]
+	const cachedValues = Array(observedProperties.length).fill(null)
 	function updatePlaybackVariables() {
 		const playbackBarRect = playbackBar.getBoundingClientRect()
 
-		marker.style.setProperty("--skip-after-timestamp-playback-left", `${playbackBarRect.left}px`)
-		marker.style.setProperty("--skip-after-timestamp-playback-top", `${playbackBarRect.top}px`)
-		marker.style.setProperty("--skip-after-timestamp-playback-right", `${playbackBarRect.right}px`)
-		marker.style.setProperty("--skip-after-timestamp-playback-bottom", `${playbackBarRect.bottom}px`)
+		for (const [i, prop] of observedProperties.entries()) {
+			const value = playbackBarRect[prop]
+			if (value === cachedValues[i]) continue
+			marker.style.setProperty("--skip-after-timestamp-playback-" + prop, value + "px")
+			cachedValues[i] = value
+		}
 
 		requestAnimationFrame(updatePlaybackVariables)
 	}
