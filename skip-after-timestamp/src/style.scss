@@ -1,28 +1,36 @@
 .skip-after-timestamp-marker {
     position: absolute;
-    height: 20px;
-    top: 50%;
+    height: 15px;
+    width: 15px;
+    left: calc(var(--skip-after-timestamp-playback-left) + var(--skip-after-timestamp-progress) * (var(--skip-after-timestamp-playback-right) - var(--skip-after-timestamp-playback-left)));
+    top: calc((var(--skip-after-timestamp-playback-top) + var(--skip-after-timestamp-playback-bottom)) / 2);
+    --skip-after-timestamp-progress: var(--skip-after-timestamp-set);
     transform: translate(-5px, -50%);
     z-index: 1;
     overflow: visible;
+    transition: left 0.25s, transform 0.05s;
+
+    &.skip-after-timestamp-overflow:not(.skip-after-timestamp-dragging) {
+        left: var(--skip-after-timestamp-playback-right);
+        top: var(--skip-after-timestamp-playback-top);
+        transform: translate(-50%, -150%);
+
+        .skip-after-timestamp-container {
+            background-color: gray;
+        }
+    }
+
+    &.skip-after-timestamp-dont-skip-this-playback .skip-after-timestamp-container {
+        background-color: gray;
+    }
 
     &:not(.skip-after-timestamp-active):not(.skip-after-timestamp-dragging) {
         display: none;
     }
 
-    &:not(.skip-after-timestamp-dragging) {
-        transition: left 0.25s ease-in-out;
-    }
-
-    &::after {
-        content: "";
-
-        width: 0;
-        height: 0;
-        border-top: 100% solid transparent;
-        border-bottom: 100% solid transparent; 
-
-        border-left: 100% solid var(--timestamp-color); 
+    &.skip-after-timestamp-dragging {
+        transition: none;
+        --skip-after-timestamp-progress: var(--skip-after-timestamp-drag);
     }
 
     &:hover {
@@ -35,14 +43,24 @@
     &:active .skip-after-timestamp-button {
         background-color: rgba(0, 0, 0, 0.4)
     }
+
+    .skip-after-timestamp-button {
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' role='img' aria-hidden='true' viewBox='0 0 16 16' fill='white'><path d='M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z'/></svg>");
+    }
+
+    &.skip-after-timestamp-dont-skip-this-playback, &.skip-after-timestamp-overflow {
+        .skip-after-timestamp-button {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' role='img' aria-hidden='true' viewBox='0 0 16 16' fill='white'><path d='M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z'/></svg>");
+        }
+    }
 }
 
 .skip-after-timestamp-container {
-    --timestamp-color: var(--spice-notification);
-    background-color: var(--timestamp-color);
+    background-color: #4687d6;
     filter: drop-shadow(0 0 6px var(--spice-shadow));
-    width: 20px;
+    transition: background-color 0.25s;
     height: 100%;
+    width: 100%;
 }
 
 .skip-after-timestamp-button {
@@ -58,8 +76,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+}
 
-    & > svg {
-        fill: currentColor;
-    }
+.skip-after-timestamp-input {
+    width: 55px;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+}
+
+.skip-after-timestamp-input:focus {
+    border-bottom: 1px solid #fff;
+    text-align: left;
 }
