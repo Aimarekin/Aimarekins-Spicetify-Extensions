@@ -22,5 +22,18 @@
             "copy",
             "clipboard"
         ]
+    },
+    {
+        "name": "Skip After Timestamp",
+        "description": "Skip songs automatically after they play for a certain amount of time.",
+        "preview": "skip-after-timestamp/assets/example.gif",
+        "main": "dist/skip-after-timestamp.js",
+        "readme": "skip-after-timestamp/README.md",
+        "tags": [
+            "skip",
+            "timestamp",
+            "time",
+            "duration"
+        ]
     }
 ]
