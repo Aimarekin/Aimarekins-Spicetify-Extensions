@@ -344,6 +344,9 @@ async function main() {
 	let isDragging = false
 
 	function beginDrag(e: MouseEvent) {
+		// Refuse to drag if there is nothing playing
+		if (!(Spicetify.Player.origin.getState().hasContext)) return
+
 		if (isDragging) return
 		isDragging = true
 
@@ -387,7 +390,10 @@ async function main() {
 	let isSkipping = false
 
 	Spicetify.Player.addEventListener("onprogress", () => {
-		//console.log("IS PERCENTAGE", isPercentageMode())
+		if (!(Spicetify.Player.origin.getState().hasContext)) {
+			disableSkipAfter()
+			return
+		}
 
 		if (Spicetify.Player.data.playback_id !== last_playback_id) {
 			last_playback_id = Spicetify.Player.data.playback_id
