@@ -1,0 +1,22 @@
+{
+  "name": "bookmark",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "spicetify-creator",
+    "build-local": "spicetify-creator --out=../dist --minify",
+    "watch": "spicetify-creator --watch"
+  },
+  "license": "CC-BY-NC-4.0",
+  "devDependencies": {
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
+    "eslint": "^8.41.0",
+    "spicetify-creator": "^1.0.13"
+  },
+  "dependencies": {
+    "spcr-settings": "^1.1.0"
+  }
+}
