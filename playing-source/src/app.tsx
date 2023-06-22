@@ -40,7 +40,7 @@ async function main() {
 	// Root class is "main-downloadClient-container"
 	// Watch for creation of element with class "main-coverSlotExpanded-container"
 	// NEW SIDEBAR:
-	// Root class is "UalNRoO1omHtEEniypS5"
+	// Root class is "UalNRoO1omHtEEniypS5" (or "i4nABk12gLqZuh9Jbdw1" in 1.2.14.1149)
 	// Then watch for creation of element with class "cover-art"
 
 	// For collapsed:
@@ -58,7 +58,7 @@ async function main() {
 		createAlbumOverlay,
 		[
 			[ ".main-downloadClient-container", ".cover-art" ],
-			[ ".UalNRoO1omHtEEniypS5", ".cover-art" ],
+			[ ".UalNRoO1omHtEEniypS5,.i4nABk12gLqZuh9Jbdw1", ".cover-art" ],
 			[ ".Root__top-container", ".main-nowPlayingView-coverArt .cover-art" ],
 		],
 		0
