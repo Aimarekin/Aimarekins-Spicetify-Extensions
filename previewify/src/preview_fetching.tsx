@@ -1,3 +1,5 @@
+import { getBase62ForURI, base62To16 } from "./util"
+
 interface TrackMetadata {
     album: {},
     artist: {
@@ -15,21 +17,19 @@ interface TrackMetadata {
 
 export async function getMetadataForTrack(URI: string | Spicetify.URI): Promise<TrackMetadata> {
     if (typeof URI === "string") URI = Spicetify.URI.fromString(URI)
-    return await (await fetch(
-        `https://spclient.wg.spotify.com/metadata/4/track/${URI.id}?market=from_token`,
+    return await Spicetify.CosmosAsync.get(
+        `wg://metadata/4/track/${base62To16(getBase62ForURI(URI)!)!}?market=from_token`,
+        undefined,
         {
-            headers: {
-                Authorization: "Bearer " + Spicetify.Platform.Session.accessToken,
-                Accept: "application/json"
-            }
+            Accept: "application/json"
         }
-    )).json() as TrackMetadata
+    ) as TrackMetadata
 }
 
-export function extractPreviewFromMetadata(metadata: TrackMetadata): string[] {
+export function extractPreviewsFromMetadata(metadata: TrackMetadata): string[] {
     return metadata.preview?.map(preview => "https://p.scdn.co/mp3-preview/" + preview.file_id ) || []
 }
 
-export async function getPreviewURLFor(URI: string | Spicetify.URI): Promise<string[]> {
-    return extractPreviewFromMetadata(await getMetadataForTrack(URI))
+export async function getPreviewURLFor(URI: string | Spicetify.URI): Promise<string | null> {
+    return extractPreviewsFromMetadata(await getMetadataForTrack(URI))[0] || null
 }

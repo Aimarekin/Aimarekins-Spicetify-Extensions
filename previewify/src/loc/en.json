@@ -1,8 +1,10 @@
 {
     "play_preview": "Play preview",
-    "play_previews": "Play previews sequentially",
     "play_preview_of": "Play preview of {0} by {1}",
 
-    "previewing": "Previewing"
+    "play_these_previews": "Play these previews",
 
+    "previewing": "Previewing",
+
+    "exit_preview": "Exit preview mode"
 }
