@@ -6,7 +6,6 @@ export function watchForElement(
 ) {
 	function elementFound(el: Node) {
 		callback(el as HTMLElement)
-		console.log("Found element", el)
 
 		if (destructionCallback) {
 			new MutationObserver((records, observer) => {
