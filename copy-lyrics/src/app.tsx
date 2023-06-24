@@ -1,5 +1,6 @@
 import "./style.css"
 import loc from "./loc.json"
+import { watchForElement } from "./DOM_watcher"
 
 export type LocalizationTable = typeof loc
 
@@ -200,6 +201,12 @@ async function main() {
 
 		copyAllLyrics()
 	})
+
+	// Add right-click on lyrics to copy all
+	watchForElement(".lyrics-lyricsContent-lyric", undefined, (lyric) => lyric.addEventListener("contextmenu", (e) => {
+		e.preventDefault()
+		copyAllLyrics()
+	}))
 }
 	
 export default main

@@ -1271,4 +1271,8 @@ declare namespace Spicetify {
             dropOriginUri?: string
         ): (event: React.DragEvent, uris?: string[], label?: string, contextUri?: string, sectionIndex?: number) => void;
     }
+
+    namespace Locale {
+        function getLocale(): string;
+    }
 }

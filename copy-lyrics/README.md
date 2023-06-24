@@ -2,7 +2,7 @@
  
 Copy the lyrics of your song directly from the "Show Lyrics" view. Click and drag your mouse accross the lyrics, then release to copy them into your clipboard.
 
-Press `CTRL+A` to copy the whole song at once.
+Press `CTRL+A`, or right click on any part of the lyrics to copy the whole song at once.
 
 The [Lyrics Plus Custom App](https://spicetify.app/docs/advanced-usage/custom-apps/#lyrics-plus) has other and similar features you might be interested in.
 
