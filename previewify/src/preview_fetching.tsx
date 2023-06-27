@@ -1,4 +1,4 @@
-import { getBase62ForURI, base62To16 } from "./util"
+import { getBase62ForURI } from "./util"
 
 interface TrackMetadata {
     album: {},
@@ -18,7 +18,7 @@ interface TrackMetadata {
 export async function getMetadataForTrack(URI: string | Spicetify.URI): Promise<TrackMetadata> {
     if (typeof URI === "string") URI = Spicetify.URI.fromString(URI)
     return await Spicetify.CosmosAsync.get(
-        `wg://metadata/4/track/${base62To16(getBase62ForURI(URI)!)!}?market=from_token`,
+        `wg://metadata/4/track/${Spicetify.URI.idToHex(getBase62ForURI(URI)!)!}?market=from_token`,
         undefined,
         {
             Accept: "application/json"
