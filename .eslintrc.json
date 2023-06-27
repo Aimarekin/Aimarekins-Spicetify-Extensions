@@ -19,6 +19,14 @@
     ],
     "rules": {
         "no-inner-declarations": "off",
+        "max-len": [
+            "warn",
+            {
+                "code": 120,
+                "ignoreUrls": true,
+                "ignoreRegExpLiterals": true
+            }
+        ],
         "indent": [
             "error",
             "tab",
