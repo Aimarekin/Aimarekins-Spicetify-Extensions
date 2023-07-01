@@ -2,7 +2,7 @@
  
 See a song's highlighted sections straight from your playbar.
 
-This extension adds markers and a highlighted background to the different sections of a song so you can quickly identify the rhythm and mood changes, drops, and other section distinctions for a song.
+This extension adds markers and a highlighted background to the different sections of a song so you can quickly identify the rhythm and mood changes, drops, and other section distinctions for a song. Allows you to easily tell apart the swings of a song, identifying desired segments and quickly skipping to them.
 
 The sections are fetched through Spotify's [Audio Analysis Web API](https://developer.spotify.com/documentation/web-api/reference/get-audio-analysis).
 
