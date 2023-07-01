@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "spicetify-creator",
-    "build-local": "spicetify-creator --out=../dist --minify",
+    "build-local": "spicetify-creator --out=../_dist --minify",
     "watch": "spicetify-creator --watch"
   },
   "license": "CC-BY-NC-4.0",

@@ -3,7 +3,7 @@
         "name": "Playing Source",
         "description": "View and go to the context of what's currently playing.",
         "preview": "playing-source/assets/icon.gif",
-        "main": "dist/playing-source.js",
+        "main": "_dist/playing-source.js",
         "readme": "playing-source/README.md",
         "tags": [
             "playbar",
@@ -15,7 +15,7 @@
         "name": "Copy Lyrics",
         "description": "Copy the lyrics of a song from Spotify's lyrics tab.",
         "preview": "copy-lyrics/assets/demo.gif",
-        "main": "dist/copy-lyrics.js",
+        "main": "_dist/copy-lyrics.js",
         "readme": "copy-lyrics/README.md",
         "tags": [
             "lyrics",
@@ -27,7 +27,7 @@
         "name": "Skip After Timestamp",
         "description": "Skip songs automatically after they play for a certain amount of time.",
         "preview": "skip-after-timestamp/assets/example.gif",
-        "main": "dist/skip-after-timestamp.js",
+        "main": "_dist/skip-after-timestamp.js",
         "readme": "skip-after-timestamp/README.md",
         "tags": [
             "skip",

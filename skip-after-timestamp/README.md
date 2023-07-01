@@ -11,7 +11,7 @@ Click on the marker to disable auto skip. Right click on it to disable it only f
 Though by default the skip will be done based on an absolute timestamp, you can also configure it to skip after a percentage of the song is completed instead. Toggle this in your Spotify settings.
 
 ## Installation
-With Spicetify Marketplace, install the "Skip After Timestamp" extension. Or manually, by placing the file [dist/skip-after-timestamp.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/dist/skip-after-timestamp.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
+With Spicetify Marketplace, install the "Skip After Timestamp" extension. Or manually, by placing the file [_dist/skip-after-timestamp.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/_dist/skip-after-timestamp.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
 
 ## Theming
 If you are a theme developer, or would like to modify the aspect of this extension, you can modify the CSS rules applied by this extension. Head to [src/style.scss](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/skip-after-timestamp/src/style.scss) to see the applied SCSS.

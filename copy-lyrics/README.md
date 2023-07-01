@@ -9,7 +9,7 @@ The [Lyrics Plus Custom App](https://spicetify.app/docs/advanced-usage/custom-ap
 ![Demo](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/assets/demo.gif?raw=true)
 
 ## Installation
-With Spicetify Marketplace, install the "Copy Lyrics" extension. Or manually, by placing the file [dist/copy-lyrics.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/dist/copy-lyrics.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
+With Spicetify Marketplace, install the "Copy Lyrics" extension. Or manually, by placing the file [_dist/copy-lyrics.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/_dist/copy-lyrics.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
 
 ## Theming
 If you are a theme developer, or would like to modify the aspect of this extension, you can modify the CSS rules applied by this extension. Head to [src/style.css](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/src/style.css) to see the applied CSS.

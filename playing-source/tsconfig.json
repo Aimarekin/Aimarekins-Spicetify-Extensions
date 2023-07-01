@@ -6,7 +6,7 @@
     "jsxFragmentFactory": "createFragment",
     "module": "commonjs",
     "resolveJsonModule": true,
-    "outDir": "dist",
+    "outDir": "../_dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

@@ -13,7 +13,7 @@ The context is displayed as an overlay on the expanded album cover on your left 
 ![Screenshot Gallery](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/playing-source/assets/gallery.png?raw=true)
 
 ## Installation
-With Spicetify Marketplace, install the "Playing Source" extension. Or manually, by placing the file [dist/playing-source.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/dist/playing-source.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
+With Spicetify Marketplace, install the "Playing Source" extension. Or manually, by placing the file [_dist/playing-source.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/_dist/playing-source.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
 
 ## Theming
 If you are a theme developer, or would like to modify the aspect of this extension, you can modify the CSS rules applied by this extension. Head to [src/style.scss](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/playing-source/src/style.scss) to see the applied SCSS.

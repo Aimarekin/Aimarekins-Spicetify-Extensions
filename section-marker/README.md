@@ -33,7 +33,7 @@ if the playbar is too thin, which would make them look too cramped.
 Sections are not available on local files due to Spotify limitations. Podcasts do not have sections.
 
 ## Installation
-With Spicetify Marketplace, install the "Section Marker" extension. Or manually, by placing the file [dist/section-marker.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/dist/section-marker.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
+With Spicetify Marketplace, install the "Section Marker" extension. Or manually, by placing the file [_dist/section-marker.js](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/_dist/section-marker.js) in your Extensions folder, adding the extension to your config, and applying. [See how to install extensions manually](https://spicetify.app/docs/advanced-usage/extensions).
 
 ## Theming
 If you are a theme developer, or would like to modify the aspect of this extension, you can modify the CSS rules applied by this extension. Head to [src/style.scss](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/section-marker/src/style.scss) to see the applied SCSS.
