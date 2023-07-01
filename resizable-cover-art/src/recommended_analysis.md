@@ -1,0 +1,14 @@
+Recommended can be based on...
+- Track YES
+- Episode NO
+- Podcast NO
+- Playlist YES
+- Search NO (refers back to played)
+- Artist YES
+- Album YES
+- Station NO (endless) 
+- UserTopTracks NO
+- Liked songs NO
+- Artist liked songs NO (refers to artist radio)
+- Local files NO
+- Folder NO

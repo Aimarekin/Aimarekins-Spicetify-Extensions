@@ -1,0 +1,147 @@
+.playing-source-container {
+    transition: filter 0.1s ease-in-out;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    --playing-source-bkg-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    filter: opacity(0);
+    color: var(--spice-text);
+
+    &:not(.playing-source-has-name, .playing-source-has-image)
+    {
+        .playing-source-source-container-link {
+            display: none
+        }
+    }
+
+    &:not(.playing-source-has-name) {
+        .playing-source-source-name {
+            display: none
+        }
+    }
+
+    &:not(.playing-source-has-image) {
+        .playing-source-source-image-container {
+            display: none
+        }
+    }
+    
+    // Rounded image cover
+
+    &.playing-source-type-artist {
+        .playing-source-source-image-container {
+            --playing-source-applied-radius: 50%;
+        }
+    }
+}
+
+.cover-art {
+    &:hover, &:focus-within {
+        & .playing-source-container {
+            filter: opacity(1);
+        }
+    }
+}
+
+.playing-source-container::before {
+    content: "";
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(transparent, var(--playing-source-bkg-color));
+}
+
+.playing-source {
+    width: 100%;
+    height: min-content;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    background: var(--playing-source-bkg-color);
+    padding: 10px;
+    padding-top: 0;
+    gap: 5px;
+    text-shadow: 0 0 4px black;
+}
+
+.playing-source-header {
+    font-weight: 100;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.playing-source-source-container-link {
+    width: 100%;
+}
+
+.playing-source-source-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.playing-source-source-image-container {
+    --playing-source-applied-radius: 4px;
+    height: 2em;
+    width: 2em;
+    border-radius: var(--playing-source-applied-radius);
+
+    &.playing-source-has-color {
+        background-color: var(--extracted-entity-color,var(--spice-card));
+    }
+    &:not(.playing-source-has-color) {
+        background-color: var(--spice-card);
+    }
+
+    transition: background-color 0.1s ease-in-out;
+
+    .playing-source-source-image {
+        border-radius: var(--playing-source-applied-radius);
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.playing-source-source-name {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+// If the container link is shown, make it be clickable
+// otherwise make the header clickable
+// (this is all only if they have an href)
+.playing-source-container {
+    &.playing-source-has-name, &.playing-source-has-image {
+        .playing-source-header {
+            pointer-events: none;
+        }
+    }
+    a:not([href]) {
+        pointer-events: none;
+        text-decoration: none;
+    }
+    a[href] {
+        pointer-events: auto;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.playing-source-hidden {
+    display: none !important;
+}
