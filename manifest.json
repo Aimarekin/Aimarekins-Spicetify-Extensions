@@ -35,5 +35,18 @@
             "time",
             "duration"
         ]
+    },
+    {
+        "name": "Section Marker",
+        "description": "See a song's highlighted sections straight from your playbar.",
+        "preview": "section-marker/assets/samples.gif",
+        "main": "_dist/section-marker.js",
+        "readme": "section-marker/README.md",
+        "tags": [
+            "sections",
+            "highlight",
+            "parts",
+            "playbar"
+        ]
     }
 ]
