@@ -24,7 +24,7 @@ This file is not plain CSS - it is SCSS, an extension of CSS that allows for an 
 This extension is localized. You can translate the extension into your language by creating a copy of the file [src/loc/en.json](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/playing-source/src/loc/en.json) and translating its contents. [src/localizer.tsx](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/playing-source/src/localizer.tsx) also has to be modified to import and support the new language.
 
 ## Building
-This extension has been made with (Spicetify Creator)[https://spicetify.app/docs/development/spicetify-creator/]. Run `npm run build-local` to compile it into Javascript.
+This extension has been made with [Spicetify Creator](https://spicetify.app/docs/development/spicetify-creator/). Run `npm run build-local` to compile it into Javascript.
 
 ---
 

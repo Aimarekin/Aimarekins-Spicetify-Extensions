@@ -20,7 +20,7 @@ Unfortunately, due to what's most likely errors with variable inheritance on the
 This extension is localized. You can add a message saying "Copied to clipboard!" in your language in the file [src/loc.json](https://github.com/Aimarekin/Aimarekins-Spicetify-Extensions/blob/main/copy-lyrics/src/loc.json)
 
 ## Building
-This extension has been made with (Spicetify Creator)[https://spicetify.app/docs/development/spicetify-creator/]. Run `npm run build-local` to compile it into Javascript.
+This extension has been made with [Spicetify Creator](https://spicetify.app/docs/development/spicetify-creator/). Run `npm run build-local` to compile it into Javascript.
 
 ---
 
