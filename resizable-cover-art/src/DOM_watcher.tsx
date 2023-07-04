@@ -36,7 +36,8 @@ export function watchForElement(
 	selector: string,
 	within: HTMLElement = document.body,
 	callback: (el: Node) => void,
-	destructionCallback?: (el: Node) => void
+	destructionCallback?: (el: Node) => void,
+	watch_subtree = true
 ) {
 	function elementFound(el: Node) {
 		callback(el as HTMLElement)
@@ -70,7 +71,7 @@ export function watchForElement(
 		}
 	}).observe(within, {
 		childList: true,
-		subtree: true
+		subtree: watch_subtree
 	})
 }
 

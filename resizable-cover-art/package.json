@@ -1,6 +1,6 @@
 {
-  "name": "playing-source",
-  "version": "2.0.0",
+  "name": "resizable-cover-art",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "spicetify-creator",
@@ -16,5 +16,8 @@
     "@typescript-eslint/parser": "^5.59.6",
     "eslint": "^8.41.0",
     "spicetify-creator": "^1.0.13"
+  },
+  "dependencies": {
+    "spcr-settings": "^1.2.0"
   }
 }
