@@ -3,44 +3,28 @@ import { createElement, createFragment } from "./jsx"
 import { waitForElm, watchForElement } from "./DOM_watcher"
 import "./style.scss"
 
-const PROGRESS_BAR_SELECTOR = ".playback-progressbar > .progress-bar"
-
 async function main() {
 	while (!Spicetify?.Player?.data || !Spicetify?.URI || !Spicetify?.Locale || !Spicetify?.CosmosAsync || !Spicetify?.React) {
 		await new Promise(resolve => setTimeout(resolve, 100))
 	}
 
 	const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1)
-	
-	function createPlaybarOverlay() {
-		const overlay = (<div className="section-marker-container section-marker-no-data">
-			<div className="section-marker-sections" />
-			<div className="section-marker-markers" />
-		</div>) as unknown as HTMLDivElement
 
-		// Remove elements if transition ends and there's no data
-		/* overlay.addEventListener("transitionend", () => {
-			if (overlay.classList.contains("section-marker-no-data")) {
-				overlay.querySelectorAll(".section-marker-marker, .section-marker-section").forEach(
-					(elm) => elm.replaceChildren()
-				)
-			}
-		}) */
+	const sectionContainer = (<div className="section-marker-element section-marker-sections" />) as unknown as HTMLDivElement
+	const markerContainer = (<div className="section-marker-element section-marker-markers" />) as unknown as HTMLDivElement
 
-		return overlay
-	}
+	// Append the containers
+	const playbar = await waitForElm(".playback-bar > .playback-progressbar > .progress-bar")
+	const playbarSliderArea = playbar.querySelector(".x-progressBar-sliderArea")!
 
-	function createMarker() {
-		const marker = (<div className="section-marker-marker" />) as unknown as HTMLDivElement
+	// Initial setup
+	playbar.classList.add("section-marker-no-data")
 
-		return marker
-	}
+	playbarSliderArea.appendChild(sectionContainer)
+	playbarSliderArea.appendChild(markerContainer)
 
-	function createSection() {
-		const section = (<div className="section-marker-section" />) as unknown as HTMLDivElement
-
-		return section
-	}
+	const createMarker = () => (<div className="section-marker-marker" />) as unknown as HTMLDivElement
+	const createSection = () => (<div className="section-marker-section" />) as unknown as HTMLDivElement
 
 	const sectionValues = {
 		start: (analysis: AudioAnalysis.Analysis, i: number) =>
@@ -52,20 +36,20 @@ async function main() {
 	}
 
 	function hydrateSectionContainer(uriRAW: any) {
-		playbarOverlay.classList[
-			playbarOverlay.classList.contains("section-marker-no-data") ? "add": "remove"
+		playbar.classList[
+			playbar.classList.contains("section-marker-no-data") ? "add": "remove"
 		]("section-marker-had-no-data")
 
 		const uri = Spicetify.URI.from(uriRAW)
 		if (!uri || uri.type !== "track") {
-			playbarOverlay.classList.add("section-marker-no-data")
+			playbar.classList.add("section-marker-no-data")
 			return
 		}
-		playbarOverlay.classList.add("section-marker-loading-data")
+		playbar.classList.add("section-marker-loading-data")
 
 		Spicetify.getAudioData(uriRAW).then((audioData) => {
-			const markerContainer = playbarOverlay.querySelector(".section-marker-markers") as HTMLDivElement
-			const sectionContainer = playbarOverlay.querySelector(".section-marker-sections") as HTMLDivElement
+			const markerContainer = playbar.querySelector(".section-marker-markers") as HTMLDivElement
+			const sectionContainer = playbar.querySelector(".section-marker-sections") as HTMLDivElement
 
 			const markerElms = Array.from(markerContainer.querySelectorAll(".section-marker-marker") as NodeListOf<HTMLDivElement>)
 			const sectionElms = Array.from(sectionContainer.querySelectorAll(".section-marker-section") as NodeListOf<HTMLDivElement>)
@@ -89,13 +73,13 @@ async function main() {
 			requestAnimationFrame(() => {
 				const trackDuration = audioData.track.duration.toString()
 
-				playbarOverlay.style.setProperty("--section-marker-data-track-duration", trackDuration)
-				playbarOverlay.dataset.sectionMarkerDataTrackDuration = trackDuration
+				playbar.style.setProperty("--section-marker-data-track-duration", trackDuration)
+				playbar.dataset.sectionMarkerDataTrackDuration = trackDuration
 
-				playbarOverlay.classList.remove("section-marker-loading-data")
-				if (playbarOverlay.classList.contains("section-marker-no-data")) {
-					playbarOverlay.classList.remove("section-marker-no-data")
-					playbarOverlay.classList.add("section-marker-had-no-data")
+				playbar.classList.remove("section-marker-loading-data")
+				if (playbar.classList.contains("section-marker-no-data")) {
+					playbar.classList.remove("section-marker-no-data")
+					playbar.classList.add("section-marker-had-no-data")
 				}
 
 				for (let i = 0; i < audioData.sections.length; i++) {
@@ -124,17 +108,10 @@ async function main() {
 			})
 		}).catch((err) => {
 			console.warn("SECTION-MARKER: Failed to get audio data:", err, "for", uriRAW, uri)
-			playbarOverlay.classList.remove("section-marker-loading-data", "section-marker-had-no-data")
-			playbarOverlay.classList.add("section-marker-no-data")
+			playbar.classList.remove("section-marker-loading-data", "section-marker-had-no-data")
+			playbar.classList.add("section-marker-no-data")
 		})
 	}
-
-
-	// Add the playbar overlay
-	const playbarOverlay = createPlaybarOverlay()
-	watchForElement(PROGRESS_BAR_SELECTOR, await waitForElm(".main-nowPlayingBar-center"), (playbar) => {
-		(playbar as HTMLElement).appendChild(playbarOverlay)
-	})
 
 	// Watch for song changes to add the section markers
 	let shownSong : string | null = null

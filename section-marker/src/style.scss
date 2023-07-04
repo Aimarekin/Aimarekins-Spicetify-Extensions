@@ -1,98 +1,112 @@
-.section-marker-container {
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.playback-bar .progress-bar {
     container-name: section-marker-container;
     container-type: inline-size;
-    transition-property: opacity;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
 
     --section-marker-marker-color: rgb(255 255 255 / 0.8);
+    --section-marker-marker-size: 4px;
 
-    &.section-marker-no-data, &.section-marker-loading-data.section-marker-had-no-data {
-        opacity: 0;
-        transition-duration: 0.1s;
+    &.section-marker-no-data,
+    &.section-marker-loading-data.section-marker-had-no-data,
+    // Don't show the markers if there's only one
+    &:has(.section-marker-section-marker-markers:not(:has(:nth-child(2)))),
+    &.section-marker-disabled
+    {
+        .section-marker-element {
+            opacity: 0;
+            transition-duration: 0.1s;
+        }
     }
 
     &.section-marker-loading-data {
-        opacity: 0.1;
-    }
-
-    & > .section-marker-markers > .section-marker-marker {
-        width: 4px;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: calc(var(--section-marker-data-start) / var(--section-marker-data-track-duration) * 100%);
-        transform: translateX(-50%);
-        background-color: var(--section-marker-marker-color);
-        transition-property: left, opacity;
-        transition-duration: 0.5s;
-        transition-timing-function: ease-in-out;
-
-        &.section-marker-not-exists {
-            left: 100%;
-            opacity: 0;
-        }
-
-        &:first-child {
-            // First marker is unnecessary
-            display: none;
+        .section-marker-element {
+            opacity: 0.1;
         }
     }
 
-    & > .section-marker-sections {
-        overflow-x: hidden;
-        direction: ltr;
-        display: flex;
-        flex-direction: row;
-        position: absolute;
-        width: 100%;
-        height: var(--progress-bar-height);
-        top: 50%;
-        transform: translateY(-50%);
-        border-radius: var(--progress-bar-radius);
+    &.section-marker-no-markers .section-marker-markers {
+        display: none;
+    }
 
-        & > .section-marker-section {
-            width: calc(var(--section-marker-data-duration) / var(--section-marker-data-track-duration) * 100%);
-            height: 100%;
-            flex-shrink: 0;
-            transition: width 0.5s ease-in-out;
-
-            &:last-child {
-                // Guarantee there's no precision errors with the last section
-                // not fully covering up the progress bar
-                width: 100%;
-            }
-
-            &.section-marker-not-exists {
-                width: 0;
-            }
-
-            &:nth-child(even) {
-                //backdrop-filter: contrast(250%) invert(50%);
-                backdrop-filter: contrast(0.6) invert(0.1);
-                //background-color: rgb(120 120 120 / 0.4);
-            }
+    // Don't transition if transitiotining from no data
+    &.section-marker-had-no-data {
+        .section-marker-marker, .section-marker-section {
+            transition: none;
         }
     }
+
 }
 
-// Don't transition if transitiotining from no data
-.section-marker-container.section-marker-had-no-data {
-    & > .section-marker-markers > .section-marker-marker {
-        transition: none;
-    }
+.section-marker-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
-    & > .section-marker-sections > .section-marker-section {
-        transition: none;
-    }
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    direction: ltr;
+
+    pointer-events: none;
 }
 
 @container section-marker-container (max-width: 300px) {
     .section-marker-markers {
         display: none;
+    }
+}
+
+
+.section-marker-marker {
+    width: var(--section-marker-marker-size);
+    height: 100cqh;
+    position: absolute;
+    top: 50%;
+    left: calc(var(--section-marker-data-start) / var(--section-marker-data-track-duration) * 100%);
+    transform: translate(-50%, -50%);
+    background-color: var(--section-marker-marker-color);
+    transition-property: left, opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+
+    &.section-marker-not-exists {
+        left: 100%;
+        opacity: 0;
+    }
+
+    &:first-child {
+        // First marker is unnecessary
+        display: none;
+    }
+}
+
+.section-marker-sections {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+}
+
+.section-marker-section {
+    width: calc(var(--section-marker-data-duration) / var(--section-marker-data-track-duration) * 100%);
+    height: 100%;
+    flex-shrink: 0;
+    transition: width 0.5s ease-in-out;
+
+    &:last-child {
+        // Guarantee there's no precision errors with the last section
+        // not fully covering up the progress bar
+        width: 100%;
+    }
+
+    &.section-marker-not-exists {
+        width: 0;
+    }
+
+    &:nth-child(even) {
+        //backdrop-filter: contrast(250%) invert(50%);
+        backdrop-filter: contrast(0.6) invert(0.1);
+        //background-color: rgb(120 120 120 / 0.4);
     }
 }
