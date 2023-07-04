@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createElement, createFragment } from "./jsx"
-import { waitForElm, watchForElement } from "./DOM_watcher"
+import { waitForElm } from "./DOM_watcher"
 import "./style.scss"
 
 async function main() {
