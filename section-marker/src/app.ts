@@ -1,6 +1,6 @@
-import { hydrateEmpty, injectInterface } from "./interface"
-import { canThisBeAnalyzed, showAnalysisForUri, preloadAnalysis } from "./analysis_loader"
-// import { t } from "./localizer"
+import { injectInterface } from "./interface"
+import { showAnalysisForUri, preloadAnalysis } from "./analysis_loader"
+//import { t } from "./localizer"
 
 
 import "./style.scss"
@@ -17,7 +17,7 @@ async function main() {
 
 	function getCurrentURI() {
 		const data = Spicetify.Player.origin.getState()
-		return data.hasContext ? Spicetify.Player.data?.track?.uri || null : null
+		return data.hasContext ? data.item.uri || null : null
 	}
 
 	// Create the button for toggling the section display
@@ -25,10 +25,12 @@ async function main() {
 		t("sectionsButtonTooltip.toggle"),
 		`<svg role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16" className="Svg-sc-ytk21e-0 Svg-img-16-icon">
 			<path d="M1 8A2.5 2.5 0 0 1 3.5 5.5h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 8zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9zM7.25 15v-14h1.5v14Z"></path>
-		</svg>`
+		</svg>`,
+		() => {
+			
+		}
 	)
-	toggleButton.register()
-	console.log(toggleButton) */
+	toggleButton.register() */
 
 	// Watch for song changes to add the section markers
 	Spicetify.Player.addEventListener("onprogress", () => {

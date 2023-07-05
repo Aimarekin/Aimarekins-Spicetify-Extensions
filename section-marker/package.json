@@ -1,6 +1,6 @@
 {
-  "name": "segment-marker",
-  "version": "1.1.1",
+  "name": "section-marker",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "build": "spicetify-creator",

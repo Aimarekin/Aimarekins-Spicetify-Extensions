@@ -1,39 +1,37 @@
 .playback-bar .progress-bar {
     --section-marker-marker-color: rgb(255 255 255 / 0.8);
     --section-marker-marker-size: 4px;
+}
 
-    &.section-marker-no-data,
-    &.section-marker-loading-data.section-marker-had-no-data,
-    // Don't show the markers if there's only one
-    &:has(.section-marker-section-marker-markers:not(:has(:nth-child(2)))),
-    &.section-marker-disabled
-    {
-        .section-marker-element {
-            opacity: 0;
-            transition-duration: 0.1s;
-        }
+.section-marker-no-data,
+.section-marker-loading-data.section-marker-had-no-data,
+.section-marker-less-than-two-sections,
+.section-marker-disabled
+{
+    .section-marker-element {
+        opacity: 0;
+        transition-duration: 0.1s;
     }
+}
 
-    &.section-marker-loading-data {
-        .section-marker-element {
-            opacity: 0.1;
-        }
+.section-marker-loading-data {
+    .section-marker-element {
+        opacity: 0.1;
     }
+}
 
-    &.section-marker-no-markers,
-    &.section-marker-playbar-below-marker-width {
-        .section-marker-markers {
-            display: none;
-        }
+.section-marker-no-markers,
+.section-marker-playbar-below-marker-width {
+    .section-marker-markers {
+        display: none;
     }
+}
 
-    // Don't transition if transitiotining from no data
-    &.section-marker-had-no-data {
-        .section-marker-marker, .section-marker-section {
-            transition: none;
-        }
+// Don't transition if transitiotining from no data
+.section-marker-had-no-data {
+    .section-marker-marker, .section-marker-section {
+        transition: none;
     }
-
 }
 
 .section-marker-element {

@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createElement, createFragment } from "./jsx"
 import { waitForElm } from "./DOM_watcher"
 
 // Under this playbar width, the markers will not be shown
@@ -8,8 +6,11 @@ const MINIMUM_MARKERS_WIDTH = 300 // px
 const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1)
 
 // Create the playbar injected elements
-const sectionContainer = (<div className="section-marker-element section-marker-sections" />) as unknown as HTMLDivElement
-const markerContainer = (<div className="section-marker-element section-marker-markers" />) as unknown as HTMLDivElement
+const sectionContainer = document.createElement("div")
+sectionContainer.classList.add("section-marker-element", "section-marker-sections")
+
+const markerContainer = document.createElement("div")
+markerContainer.classList.add("section-marker-element", "section-marker-markers")
 
 let playbar: HTMLElement
 
@@ -43,7 +44,7 @@ export async function injectInterface() {
 }
 
 export function hydrateEmpty() {
-    playbar.classList.remove("section-marker-loading-data", "section-marker-had-no-data")
+    playbar.classList.remove("section-marker-loading-data", "section-marker-had-no-data", "section-marker-less-than-two-sections")
     playbar.classList.add("section-marker-no-data")
 }
 
@@ -70,10 +71,15 @@ export function hydrateAnalysis(audioData: AudioAnalysis.Analysis) {
     const markerElms = Array.from(markerContainer.querySelectorAll(".section-marker-marker") as NodeListOf<HTMLDivElement>)
     const sectionElms = Array.from(sectionContainer.querySelectorAll(".section-marker-section") as NodeListOf<HTMLDivElement>)
 
+    playbar.classList[audioData.sections.length < 2 ? "add" : "remove"]("section-marker-less-than-two-sections")
+
     for (let i = markerElms.length; i < audioData.sections.length; i++) {
         // Create not yet existing elements
-        const marker = (<div className="section-marker-marker" />) as unknown as HTMLDivElement
-        const section = (<div className="section-marker-section" />) as unknown as HTMLDivElement
+        const marker = document.createElement("div") 
+        marker.classList.add("section-marker-marker")
+
+        const section = document.createElement("div")
+        section.classList.add("section-marker-section");
 
         [marker, section].forEach((elm) => elm.classList.add(`section-marker-not-exists`))
 
