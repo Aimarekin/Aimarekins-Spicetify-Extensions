@@ -1,0 +1,27 @@
+{
+    "sectionMarker": "Section Marker",
+
+    "sectionsButtonTooltip": {
+        "toggle": "Toggle Song Sections",
+        "show": "Show Song Sections"
+    },
+
+    "itemHasNoAnalysis": "What's currently playing has no analysis",
+
+    "settings": {
+        "displayMode": {
+            "label": "Display Mode",
+            "description": "Control when to show a song's sections on your playbar. $t(settings.displayMode.expanded)",
+            "expanded": "Always Shown - Sections will always be shown on your playbar.\nShow button to toggle - A button will be shown on your playbar to toggle the sections.\nShow only when activated for one song - The toggle button will only activate the sections for the current song.",
+            "options": {
+                "always": "Always shown",
+                "toggleButton": "Show button to toggle",
+                "toggleButtonOnce": "Show only when activated for one song"
+            }
+        },
+        "showMarkers": {
+            "label": "Show Markers",
+            "description": "Show a marker for each section change in the song. Markers will not be shown regardless if the progress bar is not wide enough (at least 300px)."
+        }
+    }
+}

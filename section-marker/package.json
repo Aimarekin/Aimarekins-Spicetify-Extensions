@@ -1,6 +1,6 @@
 {
   "name": "segment-marker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "build": "spicetify-creator",
@@ -16,5 +16,8 @@
     "@typescript-eslint/parser": "^5.59.6",
     "eslint": "^8.41.0",
     "spicetify-creator": "^1.0.13"
+  },
+  "dependencies": {
+    "i18next": "^23.2.7"
   }
 }

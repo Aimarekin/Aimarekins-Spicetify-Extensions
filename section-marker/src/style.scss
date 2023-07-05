@@ -1,7 +1,4 @@
 .playback-bar .progress-bar {
-    container-name: section-marker-container;
-    container-type: inline-size;
-
     --section-marker-marker-color: rgb(255 255 255 / 0.8);
     --section-marker-marker-size: 4px;
 
@@ -23,8 +20,11 @@
         }
     }
 
-    &.section-marker-no-markers .section-marker-markers {
-        display: none;
+    &.section-marker-no-markers,
+    &.section-marker-playbar-below-marker-width {
+        .section-marker-markers {
+            display: none;
+        }
     }
 
     // Don't transition if transitiotining from no data
@@ -51,16 +51,9 @@
     pointer-events: none;
 }
 
-@container section-marker-container (max-width: 300px) {
-    .section-marker-markers {
-        display: none;
-    }
-}
-
-
 .section-marker-marker {
     width: var(--section-marker-marker-size);
-    height: 100cqh;
+    height: var(--section-marker-playbar-height);
     position: absolute;
     top: 50%;
     left: calc(var(--section-marker-data-start) / var(--section-marker-data-track-duration) * 100%);
