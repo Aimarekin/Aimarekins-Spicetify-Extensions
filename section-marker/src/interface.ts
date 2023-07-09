@@ -1,4 +1,4 @@
-import { waitForElm } from "./DOM_watcher"
+import { waitForElm, watchForElement } from "./DOM_watcher"
 
 // Under this playbar width, the markers will not be shown
 const MINIMUM_MARKERS_WIDTH = 300 // px
@@ -12,47 +12,59 @@ sectionContainer.classList.add("section-marker-element", "section-marker-section
 const markerContainer = document.createElement("div")
 markerContainer.classList.add("section-marker-element", "section-marker-markers")
 
-let playbar: HTMLElement
-
-let alreadyInjected = false
+let hasInjected = false
 export async function injectInterface() {
-    if (alreadyInjected) throw new Error("Interface has already been injected!")
-    alreadyInjected = true
+    if (hasInjected) throw new Error("Interface already injected")
+    hasInjected = true
 
-    // Append the containers
-    playbar = await waitForElm(".playback-bar .progress-bar")
-    const playbarSliderArea = playbar.querySelector(".x-progressBar-sliderArea")!
+    // Set the size variables
+    function setDimensions(w: number, h: number) {
+        document.body.style.setProperty("--section-marker-playbar-width", w + "px")
+        document.body.style.setProperty("--section-marker-playbar-height", h + "px")
+
+        document.body.classList[w < MINIMUM_MARKERS_WIDTH ? "add" : "remove"]("section-marker-playbar-below-marker-width")
+    }
+
+    // Create the resizeobserver
+    let playbar: HTMLDivElement
+    const playbarResizeObserver = new ResizeObserver(() => {
+        setDimensions(playbar.clientWidth, playbar.clientHeight)
+    })
 
     // Initial setup
-	playbar.classList.add("section-marker-no-data")
+    document.body.classList.add("section-marker-no-data")
 
-	playbarSliderArea.appendChild(sectionContainer)
-	playbarSliderArea.appendChild(markerContainer)
+    // Append the containers
+    let lastPlaybar: HTMLDivElement | null = null
+    watchForElement(".playback-bar .playback-progressbar", await waitForElm("#main > .Root"), (el) => {
+        if (lastPlaybar === el) return
+        playbar = el as HTMLDivElement
 
-    // Set the height variable
-    function setDimensions() {
-        playbar.style.setProperty("--section-marker-playbar-height", playbar.clientHeight + "px")
-        playbar.style.setProperty("--section-marker-playbar-width", playbar.clientWidth + "px")
+        lastPlaybar?.classList.remove("section-marker-injected-playbar")
+        playbar.classList.add("section-marker-injected-playbar")
 
-        playbar.classList[playbar.clientWidth < MINIMUM_MARKERS_WIDTH ? "add" : "remove"]("section-marker-playbar-below-marker-width")
-    }
-    setDimensions()
+        const playbarSliderArea = (playbar as HTMLDivElement).querySelector(".x-progressBar-sliderArea")!
 
-    // Watch for changes to the playbar's dimensions
-    // (it'd be weird for something to change the height but compatibility ig yay!!! :D :3 :P)
-    new ResizeObserver(setDimensions).observe(playbar)
+        playbarSliderArea.appendChild(sectionContainer)
+        playbarSliderArea.appendChild(markerContainer)
+
+        setDimensions(playbar.clientWidth, playbar.clientHeight)
+
+        playbarResizeObserver.disconnect()
+        playbarResizeObserver.observe(playbar)
+    })
 }
 
 export function hydrateEmpty() {
-    playbar.classList.remove("section-marker-loading-data", "section-marker-had-no-data", "section-marker-less-than-two-sections")
-    playbar.classList.add("section-marker-no-data")
+    document.body.classList.remove("section-marker-loading-data", "section-marker-had-no-data", "section-marker-less-than-two-sections")
+    document.body.classList.add("section-marker-no-data")
 }
 
 export function hydrateLoading() {
-    playbar.classList[
-        playbar.classList.contains("section-marker-no-data") ? "add": "remove"
+    document.body.classList[
+        document.body.classList.contains("section-marker-no-data") ? "add": "remove"
     ]("section-marker-had-no-data")
-    playbar.classList.add("section-marker-loading-data")
+    document.body.classList.add("section-marker-loading-data")
 }
 
 const sectionValues = {
@@ -65,13 +77,13 @@ const sectionValues = {
 }
 
 export function hydrateAnalysis(audioData: AudioAnalysis.Analysis) {
-    const markerContainer = playbar.querySelector(".section-marker-markers") as HTMLDivElement
-    const sectionContainer = playbar.querySelector(".section-marker-sections") as HTMLDivElement
+    const markerContainer = document.body.querySelector(".section-marker-markers") as HTMLDivElement
+    const sectionContainer = document.body.querySelector(".section-marker-sections") as HTMLDivElement
 
     const markerElms = Array.from(markerContainer.querySelectorAll(".section-marker-marker") as NodeListOf<HTMLDivElement>)
     const sectionElms = Array.from(sectionContainer.querySelectorAll(".section-marker-section") as NodeListOf<HTMLDivElement>)
 
-    playbar.classList[audioData.sections.length < 2 ? "add" : "remove"]("section-marker-less-than-two-sections")
+    document.body.classList[audioData.sections.length < 2 ? "add" : "remove"]("section-marker-less-than-two-sections")
 
     for (let i = markerElms.length; i < audioData.sections.length; i++) {
         // Create not yet existing elements
@@ -95,13 +107,13 @@ export function hydrateAnalysis(audioData: AudioAnalysis.Analysis) {
     requestAnimationFrame(() => {
         const trackDuration = audioData.track.duration.toString()
 
-        playbar.style.setProperty("--section-marker-data-track-duration", trackDuration)
-        playbar.dataset.sectionMarkerDataTrackDuration = trackDuration
+        document.body.style.setProperty("--section-marker-data-track-duration", trackDuration)
+        document.body.dataset.sectionMarkerDataTrackDuration = trackDuration
 
-        playbar.classList.remove("section-marker-loading-data")
-        if (playbar.classList.contains("section-marker-no-data")) {
-            playbar.classList.remove("section-marker-no-data")
-            playbar.classList.add("section-marker-had-no-data")
+        document.body.classList.remove("section-marker-loading-data")
+        if (document.body.classList.contains("section-marker-no-data")) {
+            document.body.classList.remove("section-marker-no-data")
+            document.body.classList.add("section-marker-had-no-data")
         }
 
         for (let i = 0; i < audioData.sections.length; i++) {
