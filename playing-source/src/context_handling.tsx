@@ -37,7 +37,7 @@ export function getContext(): SourceInfo {
 	if (returned.type == SourceType.UNKNOWN) {
 		const RawURI = Spicetify.Player.data?.context_uri
 		const CtxURI = Spicetify.URI.from(RawURI)
-		const provider = Spicetify.Player.data?.track?.provider
+		const provider = Spicetify.Player.data?.item?.provider
 
 		const fullIdentifier = `${provider}@${RawURI}`
 		if (!warnedNotSupported.has(fullIdentifier)) {
