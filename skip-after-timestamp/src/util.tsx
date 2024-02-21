@@ -36,3 +36,12 @@ export function getPercentageClickedOn(e: MouseEvent, elm: HTMLElement) {
 	const mouseClickOffset = e.clientX - elm.getBoundingClientRect().left
 	return Math.min(Math.max(mouseClickOffset / elm.clientWidth, 0), 1)
 }
+
+export function returnAnyAccess(obj: any, paths: string[]): any {
+	for (const path of paths) {
+		if (obj[path] !== undefined) {
+			return obj[path]
+		}
+	}
+	return undefined
+}

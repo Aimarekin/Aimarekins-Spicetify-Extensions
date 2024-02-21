@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createElement, createFragment } from "./jsx"
 import { Translate } from "./localizer"
-import { waitForElm, getPercentageClickedOn } from "./util"
+import { waitForElm, getPercentageClickedOn, returnAnyAccess } from "./util"
 import { formatTime, formatPercentage, parseTime, parsePercentage } from "./string_representations"
 import { SettingsSection } from "spcr-settings";
 import "./format_unicorn"
@@ -14,6 +14,9 @@ const MINIMUM_SKIP_DURATION = 1 * 1000
 
 const distancePoints = (x1: number, y1: number, x2: number, y2: number) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
 
+// Changed in recent versions
+const returnAnyAccessPlaybackId = () => returnAnyAccess(Spicetify.Player.data, ["playbackId", "playback_id"])
+
 async function main() {
 	while (!Spicetify?.Player || !Spicetify?.Locale || !Spicetify?.showNotification || !Spicetify?.CosmosAsync) {
 		await new Promise(resolve => setTimeout(resolve, 100))
@@ -23,16 +26,23 @@ async function main() {
 	// so as to not skip the track when the user seeks
 	// Bind to CosmosAsync updates
 
-	Spicetify.CosmosAsync.sub("sp://player/v2/main", (state) => {
-		if (state.playback_id !== Spicetify.Player.data.playback_id) return
+	// This doesn't actually work in newer versions. Whoops!
+	// I'll fix it for newer versions if like I want to
 
-		const progress = state.position_as_of_timestamp
-		if (progress === undefined || progress < MINIMUM_SKIP_DURATION) return
+	try {
+		Spicetify.CosmosAsync.sub("sp://player/v2/main", (state) => {
+			if (state.playback_id !== returnAnyAccessPlaybackId()) return
 
-		if (progress >= skipAfterDuration()) {
-			setSkipThisPlayback(false)
-		}
-	})
+			const progress = state.position_as_of_timestamp
+			if (progress === undefined || progress < MINIMUM_SKIP_DURATION) return
+
+			if (progress >= skipAfterDuration()) {
+				setSkipThisPlayback(false)
+			}
+		})
+	} catch (e) {
+		console.error(e)
+	}
 
 
 	// Add the settings section
@@ -386,7 +396,7 @@ async function main() {
 		if (e.button === 2) beginDrag(e)
 	})
 
-	let last_playback_id: string | undefined = undefined
+	let lastPlaybackId: string | undefined = undefined
 	let isSkipping = false
 
 	Spicetify.Player.addEventListener("onprogress", () => {
@@ -395,8 +405,9 @@ async function main() {
 			return
 		}
 
-		if (Spicetify.Player.data.playback_id !== last_playback_id) {
-			last_playback_id = Spicetify.Player.data.playback_id
+		const currentPlaybackId = returnAnyAccessPlaybackId()
+		if (currentPlaybackId !== lastPlaybackId) {
+			lastPlaybackId = currentPlaybackId
 			setSkipThisPlayback(true)
 			isSkipping = false
 			updateMarkerProgress()
