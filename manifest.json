@@ -48,5 +48,16 @@
             "parts",
             "playbar"
         ]
+    },
+    {
+        "name": "Random Bad to the Bone Riff",
+        "description": "Randomly plays the Bad to the Bone riff",
+        "preview": "random-bad-to-the-bone-riff/assets/badToTheBone.gif",
+        "main": "_dist/random-bad-to-the-bone-riff.js",
+        "readme": "random-bad-to-the-bone-riff/README.md",
+        "tags": [
+            "Bad to the Bone",
+            "random"
+        ]
     }
 ]

@@ -1,0 +1,20 @@
+{
+  "name": "random-bad-to-the-bone-riff",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:local",
+    "build:dist": "node build.mjs --prod --dist",
+    "build:local": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "license": "CC-BY-NC-4.0",
+  "devDependencies": {
+    "command-line-args": "^5.2.1",
+    "esbuild": "^0.19.5",
+    "glob": "^10.3.10"
+  },
+  "dependencies": {
+    "wait": "^0.4.2"
+  }
+}
