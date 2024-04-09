@@ -42,9 +42,10 @@ async function main() {
 		const selectionText = selection.toString().trim()
 		if (!selectionText) return null
 
-		// The selection must be contained within the os-content container, or the playing view
-		const osContent = document.querySelector(".os-content:has(.lyrics-lyrics-container), .main-nowPlayingView-lyricsContent")
-		if (!osContent || !osContent.contains(selection.getRangeAt(0).commonAncestorContainer)) return null
+		// The selection must be contained within the lyrics container, or the playing view
+		const commonAncestor = selection.getRangeAt(0).commonAncestorContainer
+		const commonAncestorElement = commonAncestor instanceof HTMLElement ? commonAncestor : commonAncestor.parentElement
+		if (!(commonAncestorElement?.closest(".lyrics-lyrics-contentContainer, .main-nowPlayingView-lyricsContent"))) return null
 
 		return selectionText
 	}
