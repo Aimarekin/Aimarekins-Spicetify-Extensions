@@ -1,0 +1,30 @@
+.os-content:has(.lyrics-lyrics-container .lyrics-lyricsContent-lyric),
+.lyrics-lyrics-contentContainer:has(.lyrics-lyricsContent-lyric),
+.main-nowPlayingView-lyricsContent,
+.lyrics-lyricsContent-lyric
+{
+	user-select: text !important;
+}
+
+.lyrics-lyricsContent-description,
+.lyrics-lyricsContent-provider
+{
+	user-select: none !important;
+}
+
+/* Animate the background from yellow to transparent
+this is done with CSS highlights
+CSS highlights do not support animations
+and due to what's most likely a bug they do not inherit variables whatsoever
+so it must be done by modifying this rule from code */
+
+/* For it to be easily modifiable from code, it is not imported as part of this file,
+but rather it is injected into the page by the code
+.lyrics-lyricsContent-lyric::highlight(copy-lyrics-deselection-highlight) {
+	background: transparent !important;
+}
+*/
+
+.copy-lyrics-selecting .lyrics-lyricsContent-lyric {
+	cursor: text !important;
+}

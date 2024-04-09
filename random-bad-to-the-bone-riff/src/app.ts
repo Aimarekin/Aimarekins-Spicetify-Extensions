@@ -1,12 +1,12 @@
 
-import pollCondition from "./util/pollCondition"
+import waitPolledCondition from "wait-polled-condition"
 import initializeBoners from "./boners"
 
-pollCondition(() => [
+waitPolledCondition([
 	() => window.Spicetify,
 	() => Spicetify.Player,
 	() => Spicetify.showNotification
-].every((fn) => fn())).then(async () => {
+]).then(async () => {
 	const updateBonerLevel = initializeBoners()
 	
 	// TODO: Allow configuration

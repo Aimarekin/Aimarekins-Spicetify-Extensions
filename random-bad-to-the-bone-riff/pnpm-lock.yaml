@@ -8,6 +8,9 @@ dependencies:
   wait:
     specifier: ^0.4.2
     version: 0.4.2
+  wait-polled-condition:
+    specifier: ^1.0.1
+    version: 1.0.1
 
 devDependencies:
   command-line-args:
@@ -490,6 +493,10 @@ packages:
     resolution: {integrity: sha512-VAH4IvQ7BDFYglMd7BPRDfLgxZZX4O4TFcRDA6EN5X7erNJJq+McIEp8np9aVtxrCJ6qx4GTYVfOWNjcqwZgRw==}
     engines: {node: '>=8'}
     dev: true
+
+  /wait-polled-condition@1.0.1:
+    resolution: {integrity: sha512-Oy4K5E7jIssRWQZ4f+I7DrMcxl7r0iApx2DaTvbVa9gtHcES/6CTOlajIOstdorqdNhHVfzFrsowYOgVu6lykQ==}
+    dev: false
 
   /wait@0.4.2:
     resolution: {integrity: sha512-g4Uu25y9MJ3jtBcrRDDXeI/f7lBNtVmNUM3Xd78S19tm1gZutDkL/f6UEcMi/NqWvKZ74Mhrb+4LwpYbjG6XYA==}

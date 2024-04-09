@@ -15,6 +15,7 @@
     "glob": "^10.3.10"
   },
   "dependencies": {
-    "wait": "^0.4.2"
+    "wait": "^0.4.2",
+    "wait-polled-condition": "^1.0.1"
   }
 }

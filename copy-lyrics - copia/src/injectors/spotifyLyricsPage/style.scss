@@ -1,0 +1,14 @@
+.Root__main-view.copy-lyrics__is-in-lyrics-view {
+	.lyrics-lyrics-container {
+		.lyrics-lyricsContent-text {
+			user-select: text !important;
+		}
+		.lyrics-lyricsContent-description, .lyrics-lyricsContent-provider {
+			user-select: none !important;
+		}
+	}
+
+	&.copy-lyrics__is-selecting .lyrics-lyricsContent-lyric {
+		cursor: text !important;
+	}
+}

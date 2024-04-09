@@ -1,11 +1,9 @@
-import pollCondition from "./util/pollCondition"
+import waitPolledCondition from "wait-polled-condition"
 import getTracksMatchingSearchQuery from "./util/getTracksMatchingSearchQuery"
 
 const BAD_TO_THE_BONE_ISRCS = ["USEM38500069", "USEM30400010"]
 
-const bad_to_the_bone_uris = (async () => {
-	await pollCondition(() => Boolean(Spicetify?.CosmosAsync))
-	
+const bad_to_the_bone_uris = waitPolledCondition(() => Spicetify?.CosmosAsync).then(async () => {	
 	const uris = new Set<string>()
 
 	for (const isrc of BAD_TO_THE_BONE_ISRCS) {
@@ -14,7 +12,7 @@ const bad_to_the_bone_uris = (async () => {
 	}
 
 	return uris
-})()
+})
 
 export default async function isBadToTheBone(uri: string | Spicetify.URI) {
 	const coercedURI = Spicetify.URI.from(uri)
