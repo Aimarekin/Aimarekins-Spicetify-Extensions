@@ -1,8 +1,5 @@
-export const formatTime = (ms: number) => `${
-    Math.floor(ms / 60000)
-}:${
-    Math.floor((ms % 60000) / 1000).toString().padStart(2, "0")
-}`
+export const formatTime = (ms: number) =>  Math.floor(ms / 60000) + ":" + Math.floor((ms % 60000) / 1000).toString().padStart(2, "0")
+
 
 export const formatPercentage = (percentage: number, forCSS = false) =>
     `${forCSS ? percentage * 100 : Math.floor(percentage * 100)}%`

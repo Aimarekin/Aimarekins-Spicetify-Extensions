@@ -1,20 +1,11 @@
-export type SupportedLangs = "en" | "es"
+import i18next from "i18next"
+export { i18next }
 
-import en from "./loc/en.json"
-import es from "./loc/es.json"
+import translations from "translations"
 
-const fallbackLang = "en"
-const stringStorage: { [lang in SupportedLangs]: { [key:string]: string}} = {
-	en: en,
-	es: es
-}
+i18next.init({
+    debug: DEV,
+    resources: translations
+})
 
-export function Translate(key: string, locale?: SupportedLangs): string {
-	locale = locale || Spicetify.Locale.getLocale() as SupportedLangs
-
-	if (stringStorage[locale]) {
-		return stringStorage[locale][key] || key
-	} else {
-		return Translate(key, fallbackLang)
-	}
-}
+export const t = i18next.t

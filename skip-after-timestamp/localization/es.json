@@ -1,0 +1,18 @@
+{
+    "skip_after_timestamp": "Saltar Después de",
+
+    "percentage_mode_setting": "Modo de porcentaje - Salta la canción después de que se haya reproducido un porcentaje en vez de una duración",
+
+    "will_skip_after_time": "Se reproducirá la siguiente canción tras {0}",
+    "will_skip_after_percentage": "Se reproducirá la siguiente canción tras reproducir el {0}",
+
+    "future_skip_after_time": "Las siguientes canciones se reproducirán tras {0}",
+    "future_skip_after_percentage": "Las siguientes canciones se reproducirán tras reproducir el {0}",
+
+    "this_skip_after_time": "Se reproducirá la siguiente canción tras {0}",
+    "this_skip_after_percentage": "Se reproducirá la siguiente canción tras reproducir el {0}",
+
+    "disabled_auto_skip": "Siguiente reproducción automática desactivada",
+
+    "disabled_once": "Esta canción no se saltará automáticamente"
+}

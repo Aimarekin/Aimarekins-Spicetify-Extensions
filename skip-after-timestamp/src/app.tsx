@@ -22,28 +22,6 @@ async function main() {
 		await new Promise(resolve => setTimeout(resolve, 100))
 	}
 
-	// We have to detect when the track is seeked
-	// so as to not skip the track when the user seeks
-	// Bind to CosmosAsync updates
-
-	// This doesn't actually work in newer versions. Whoops!
-	// I'll fix it for newer versions if like I want to
-
-	try {
-		Spicetify.CosmosAsync.sub("sp://player/v2/main", (state) => {
-			if (state.playback_id !== returnAnyAccessPlaybackId()) return
-
-			const progress = state.position_as_of_timestamp
-			if (progress === undefined || progress < MINIMUM_SKIP_DURATION) return
-
-			if (progress >= skipAfterDuration()) {
-				setSkipThisPlayback(false)
-			}
-		})
-	} catch (e) {
-		console.error(e)
-	}
-
 
 	// Add the settings section
 	const settings = new SettingsSection(Translate("skip_after_timestamp"), "skip-after-timestamp", {
