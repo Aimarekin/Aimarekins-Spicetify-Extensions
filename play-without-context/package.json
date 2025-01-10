@@ -1,0 +1,27 @@
+{
+  "name": "play-without-context",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:local",
+    "build:dist": "node build.mjs --prod --dist",
+    "build:local": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "devDependencies": {
+    "command-line-args": "^5.2.1",
+    "esbuild": "^0.19.5",
+    "glob": "^10.3.10",
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.13.0",
+    "prettier": "3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
+  },
+  "dependencies": {
+    "wait-polled-condition": "^1.0.1"
+  }
+}

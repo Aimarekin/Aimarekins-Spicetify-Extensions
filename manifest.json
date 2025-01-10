@@ -59,5 +59,17 @@
             "Bad to the Bone",
             "random"
         ]
+    },
+    {
+        "name": "Play without Context",
+        "description": "Play an item without its context",
+        "preview": "play-without-context/assets/square-example.png",
+        "main": "_dist/play-without-context.js",
+        "readme": "play-without-context/README.md",
+        "tags": [
+            "play",
+            "track",
+            "context"
+        ]
     }
 ]
